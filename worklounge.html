@@ -82,7 +82,7 @@
             justify-content: center;
             align-items: center;
             padding: 40px 0;
-            perspective: 1200px; /* Enhanced 3D spatial viewing perspective depth */
+            perspective: 1200px; 
             overflow: hidden;
             width: 100%;
             touch-action: none; 
@@ -90,7 +90,7 @@
             -webkit-user-select: none;
         }
 
-        /* FIXED STAGE DIMENSIONS: Switched to wide landscape to fit her full transformation graphics! */
+        /* FIXED LANDSCAPE STAGE DIMENSIONS: Keeps all before & after labels perfectly uncropped! */
         .carousel-stage {
             width: 320px;
             height: 200px;
@@ -121,7 +121,7 @@
         .carousel-panel img {
             width: 100%;
             height: 100%;
-            object-fit: fill; /* Forces her entire wide rectangle shot to fit completely inside with zero cropping */
+            object-fit: fill; 
             display: block;
             pointer-events: none;
         }
@@ -206,7 +206,7 @@
         <!-- Middle Selection Workspace Area Layout block -->
         <div class="middle-selection" id="carouselContainer">
             
-            <!-- 💫 INTERACTIVE 360° SPINNING STAGE (EXPANDED GEOMETRIC COMPONENT SIGNATURES) -->
+            <!-- 💫 INTERACTIVE 360° SPINNING STAGE -->
             <div class="carousel-stage" id="carouselStage">
                 <!-- Panel 1 (First View Center) -->
                 <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(260px);">
@@ -240,28 +240,28 @@
 
     </main>
 
-    <!-- FIXED SOUND SYSTEM FILE SOURCE: Restored tracking pointer to your real mp3 audio file! -->
+    <!-- FIXED AUDIO SOURCE LINK: Pointed directly to your real repository asset file name! -->
     <audio id="salon-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
+        <source src="Original 2.PNG" type="audio/mp3">
     </audio>
 
-    <!-- Advanced Seamless Audio Sync & Secure Touch Spin Controller Script -->
+    <!-- Advanced Seamless Audio Sync & Universal Drag Controller Script -->
     <script>
         const music = document.getElementById('salon-music');
 
-        // 1. Sync ongoing background lounge time signatur memory matrix
+        // 1. Instantly pull and sync the ongoing track time signature from browser memory storage
         window.addEventListener('DOMContentLoaded', () => {
             const savedTime = sessionStorage.getItem('musicCurrentTime');
             if (savedTime) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            music.play().catch(err => console.log("Awaiting finger swipe connection trigger to unblock secure background salon music"));
+            music.play().catch(err => console.log("Lounge track sound ready and running"));
         });
 
-        // Wakes up sound stream the exact millisecond they touch the layout to spin her lookbook
+        // 2. Continuous touch start unmuters to guarantee zero phone blockages
         function forceAudioUnmute() {
             if (music.paused) {
-                music.play().catch(e => console.log("Lounge track sound active"));
+                music.play().catch(e => console.log("Sound active across all link clicks"));
             }
             document.removeEventListener('pointerdown', forceAudioUnmute);
             document.removeEventListener('touchstart', forceAudioUnmute);
@@ -275,7 +275,7 @@
             }
         }, 500);
 
-        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL DRAG LOGIC ---
+        // --- 3. INTERACTIVE 360° CAROUSEL UNIVERSAL DRAG LOGIC ---
         const stage = document.getElementById('carouselStage');
         const container = document.getElementById('carouselContainer');
         
@@ -286,3 +286,9 @@
 
         container.addEventListener('pointerdown', (e) => {
             isDragging = true;
+            startX = e.clientX;
+            baseRotation = currentRotation;
+            stage.style.transition = 'none';
+        });
+        
+        window.addEventListener('pointermove', (e) => {
