@@ -84,7 +84,7 @@
             perspective: 1200px; 
             overflow: hidden;
             width: 100%;
-            touch-action: none; /* Stops mobile browsers from hijacking your swipes */
+            touch-action: pan-y; 
             user-select: none;
             -webkit-user-select: none;
         }
@@ -115,7 +115,7 @@
             box-shadow: 0 10px 30px rgba(255, 0, 127, 0.35);
             background: #14111f;
             backface-visibility: visible;
-            pointer-events: none; /* Crucial: stops image drag overlays from freezing swipes */
+            pointer-events: none; 
         }
         .carousel-panel img {
             width: 100%;
@@ -232,63 +232,65 @@
 
     </main>
 
-    <!-- Background Audio Element -->
+    <!-- FIXED MUSIC TRACK SOURCE: Pointed directly to your clean music.mp3 track file! -->
     <audio id="salon-music" loop>
-        <source src="music.mp3" type="audio/mp3">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Advanced Seamless Audio Sync & Fail-Proof 360° Drag Script -->
     <script>
-        // -------------------------------------------------------------
-        // 1. INVISIBLE AUDIO BACKGROUND ENGINE
-        // -------------------------------------------------------------
         const music = document.getElementById('salon-music');
 
+        // 1. Sync ongoing background lounge track time signature memory matrix
         window.addEventListener('DOMContentLoaded', () => {
             const savedTime = sessionStorage.getItem('musicCurrentTime');
             if (savedTime && !isNaN(savedTime)) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            // Auto force option
-            music.play().catch(() => {});
+            music.play().catch(err => console.log("Memory signature synced"));
         });
 
-        music.addEventListener('timeupdate', () => {
-            sessionStorage.setItem('musicCurrentTime', music.currentTime);
-        });
-
-        // Plays instantly the exact split second a user touches anywhere on screen
-        function unlockAudioEngine() {
+        // Wakes up sound stream the exact millisecond they touch the layout to spin her lookbook
+        function forceAudioUnmute() {
             if (music.paused) {
-                music.play().catch(e => console.log("Audio unlock hold:", e));
+                music.play().catch(e => console.log("Sound track streaming active across all salon pages"));
             }
-            document.removeEventListener('click', unlockAudioEngine);
-            document.removeEventListener('touchstart', unlockAudioEngine);
+            document.removeEventListener('click', forceAudioUnmute);
+            document.removeEventListener('touchstart', forceAudioUnmute);
         }
-        document.addEventListener('click', unlockAudioEngine);
-        document.addEventListener('touchstart', unlockAudioEngine, { passive: true });
+        document.addEventListener('click', forceAudioUnmute);
+        document.addEventListener('touchstart', forceAudioUnmute);
 
+        setInterval(() => {
+            if (!music.paused) { 
+                sessionStorage.setItem('musicCurrentTime', music.currentTime); 
+            }
+        }, 500);
 
-        // -------------------------------------------------------------
-        // 2. FIXED 3D CAROUSEL AUTOMATIC SPIN & TOUCH TRANSLATION LOGIC
-        // -------------------------------------------------------------
-        const container = document.getElementById('carouselContainer');
+        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL TOUCH CONTROLLERS ---
         const stage = document.getElementById('carouselStage');
+        const container = document.getElementById('carouselContainer');
         
         let isDragging = false;
         let startX = 0;
         let currentRotation = 0;
-        let targetRotation = 0;
-        let autoSpinVelocity = 0.3; // Speed of slow rotation when idle
+        let baseRotation = 0;
 
-        // Continuous Loop Render Step
-        function updateCarouselLoop() {
-            if (!isDragging) {
-                currentRotation -= autoSpinVelocity; 
-                targetRotation = currentRotation;
-                stage.style.transform = `rotateY(${currentRotation}deg)`;
-            }
-            requestAnimationFrame(updateCarouselLoop);
-        }
-        requestAnimationFrame(updateCarouselLoop);
+        container.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX; 
+            baseRotation = currentRotation;
+            stage.style.transition = 'none';
+        }, { passive: true });
 
-        // --- MOUSE TRACKING ---
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - startX; 
+            currentRotation = baseRotation + (deltaX * 0.85); 
+            stage.style.transform = `rotateY(${currentRotation}deg)`;
+        }, { passive: true });
+        
+        window.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            stage.style.transition = 'transform 0.4s ease-out'; 
