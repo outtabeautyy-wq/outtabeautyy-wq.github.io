@@ -13,7 +13,7 @@
         }
         
         body { 
-            background: linear-gradient(rgba(12, 9, 20, 0.75), rgba(12, 9, 20, 0.75)), url('worklounge.jpeg') center/cover no-repeat fixed;
+            background: linear-gradient(rgba(12, 9, 20, 0.85), rgba(12, 9, 20, 0.85)), url('worklounge.jpeg') center/cover no-repeat fixed;
             color: #f4f3f7; 
             font-family: 'Segoe UI', Arial, sans-serif; 
             line-height: 1.5; 
@@ -60,12 +60,10 @@
             width: 100%;
         }
 
-        /* Shrunk top margin to move Kira's Work Lounge up higher */
         .top-content {
-            margin-top: 15px;
+            margin-top: 25px;
         }
 
-        /* Centered Header Layout text */
         .worklounge-title {
             color: #ff007f;
             font-size: 2rem;
@@ -76,30 +74,77 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* Middle Selection Area: Before & After coming soon */
+        /* Middle Selection Area: 3D 360° Interactive Carousel Space */
         .middle-selection {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px 0;
+            padding: 30px 0;
+            perspective: 1000px; /* Gives the depth illusion */
+            overflow: hidden;
+            width: 100%;
         }
 
-        .coming-soon-tag {
+        /* Carousel Stage Window */
+        .carousel-stage {
+            width: 190px;
+            height: 240px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            cursor: grab;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        .carousel-stage:active { cursor: grabbing; }
+
+        /* Individual 3D Image Panels */
+        .carousel-panel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #ff007f;
+            box-shadow: 0 10px 30px rgba(255, 0, 127, 0.35);
+            background: #14111f;
+            backface-visibility: visible;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+        .carousel-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        /* Swiping Hint Banner text */
+        .swipe-hint {
+            font-size: 0.8rem;
             color: #ffffff;
-            font-size: 1.3rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-style: italic;
+            letter-spacing: 3px;
+            margin-top: 15px;
+            margin-bottom: 15px;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            line-height: 1.6;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 0, 127, 0.2); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(255, 0, 127, 0.8); }
+            100% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 0, 127, 0.2); }
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
             margin-top: auto;
-            padding-bottom: 65px; /* UPDATED: Lifted both selection cards up higher away from the absolute screen base */
+            padding-bottom: 40px; 
             width: 100%;
         }
 
@@ -111,7 +156,7 @@
             padding: 12px 18px; 
             text-align: left;
             box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
             backdrop-filter: blur(5px);
         }
 
@@ -145,6 +190,7 @@
             box-shadow: 0 0 20px #ff007f;
             transition: all 0.3s ease;
             width: auto;
+            box-sizing: border-box;
         }
 
         .book-now-button:hover {
@@ -168,12 +214,31 @@
     <main class="main-content">
         
         <div class="top-content">
-            <h1 class="worklounge-title">Kira’s Work Lounge</h1>
+            <h1 class="worklounge-title">3D Vision Gallery</h1>
         </div>
 
         <!-- Middle Selection Workspace Area Layout block -->
-        <div class="middle-selection">
-            <div class="coming-soon-tag">Before and After Photos<br>Coming Soon</div>
+        <div class="middle-selection" id="carouselContainer">
+            
+            <!-- 💫 INTERACTIVE 3D 360° SPINNING STAGE -->
+            <div class="carousel-stage" id="carouselStage">
+                <!-- Panel 1 (Front View Center) -->
+                <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(170px);">
+                    <img src="3d-photo1.png" alt="Luxury Lash Angle 1">
+                </div>
+                <!-- Panel 2 (Rotated Left Angle) -->
+                <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(170px);">
+                    <img src="3d-photo2.png" alt="Luxury Lash Angle 2">
+                </div>
+                <!-- Panel 3 (Rotated Right Angle) -->
+                <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(170px);">
+                    <img src="3d-photo3.png" alt="Luxury Lash Angle 3">
+                </div>
+            </div>
+
+            <!-- Glowing Instructions Link -->
+            <div class="swipe-hint">◁ Swipe Image To Spin 360° ▷</div>
+
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -188,37 +253,47 @@
 
             <!-- Direct Action Booking Button Link Trigger Section -->
             <a href="livecalendar.html" target="_blank" class="book-now-button">Book an Appointment Now</a>  
-
-            </div>
-
-    
-            
-
         </div>
 
     </main>
 
-    <!-- Background Audio Element -->
+    <!-- Background Audio Continuous Element -->
     <audio id="salon-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
+        <source src="Original 2.PNG" type="audio/mp3">
     </audio>
 
-    <!-- Interactive Touch Control Script -->
+    <!-- Advanced Seamless Audio Sync & 360° Touch Spin Controller Script -->
     <script>
-        function playSalonMusic() {
-            var track = document.getElementById("salon-music");
-            track.play().catch(function(e) {
-                console.log("Autoplay paused by browser security policy.");
-            });
-            document.removeEventListener('click', playSalonMusic);
-            document.removeEventListener('touchstart', playSalonMusic);
-            document.removeEventListener('scroll', playSalonMusic);
-        }
-        document.addEventListener('click', playSalonMusic);
-        document.addEventListener('touchstart', playSalonMusic);
-        document.addEventListener('scroll', playSalonMusic);
-    </script>
+        // --- 1. CONTINUOUS MUSIC TRACKER MATRIX ---
+        const music = document.getElementById('salon-music');
 
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTime = sessionStorage.getItem('musicCurrentTime');
+            if (savedTime) { 
+                music.currentTime = parseFloat(savedTime); 
+            }
+            music.play().catch(err => console.log("Music synced continuously across lounge links"));
+        });
 
-</body>
-</html>
+        setInterval(() => {
+            if (!music.paused) { 
+                sessionStorage.setItem('musicCurrentTime', music.currentTime); 
+            }
+        }, 500);
+
+        // --- 2. INTERACTIVE 360° CAROUSEL SWIPE LOGIC ---
+        const stage = document.getElementById('carouselStage');
+        const container = document.getElementById('carouselContainer');
+        
+        let isDragging = false;
+        let startX = 0;
+        let currentRotation = 0;
+        let velocityRotation = 0;
+
+        // Touch Phone Screens & Mouse Drag Bindings
+        container.addEventListener('mousedown', startDrag);
+        container.addEventListener('touchstart', startDrag, { passive: true });
+        
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('touchmove', dragMove, { passive: false });
+        
