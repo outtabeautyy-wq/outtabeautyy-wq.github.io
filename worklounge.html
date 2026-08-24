@@ -218,6 +218,29 @@
         document.addEventListener('touchstart', playSalonMusic);
         document.addEventListener('scroll', playSalonMusic);
     </script>
+<!-- 1. THE 3D PICTURE CARDS CONTAINER -->
+<div style="text-align: center; padding: 40px 20px; background: #faf8f5;">
+  <h2 style="font-family: 'Playfair Display', serif; letter-spacing: 2px; text-transform: uppercase;">The 3D Vision Gallery</h2>
+  <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto;">
+    <div style="flex: 1; min-width: 220px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);"><img src="3d-photo1.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+    <div style="flex: 1; min-width: 220px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);"><img src="3d-photo2.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+    <div style="flex: 1; min-width: 220px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);"><img src="3d-photo3.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+  </div>
+</div>
+
+<!-- 2. THE CONTINUOUS MUSIC PLAYER (PASTE AT THE VERY BOTTOM RIGHT BEFORE </body>) -->
+<audio id="bgMusic" loop><source src="worklounge-theme.mp3" type="audio/mp3"></audio>
+<script>
+  const music = document.getElementById('bgMusic');
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTime = sessionStorage.getItem('musicCurrentTime');
+    if (savedTime) { music.currentTime = parseFloat(savedTime); }
+    music.play().catch(err => console.log("Click to play music"));
+  });
+  setInterval(() => {
+    if (!music.paused) { sessionStorage.setItem('musicCurrentTime', music.currentTime); }
+  }, 500);
+</script>
 
 </body>
 </html>
