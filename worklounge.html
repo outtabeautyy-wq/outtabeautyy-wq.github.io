@@ -89,7 +89,7 @@
             -webkit-user-select: none;
         }
 
-        /* LANDSCAPE STAGE DIMENSIONS: Perfect for her transformation graphics! */
+        /* LANDSCAPE STAGE DIMENSIONS */
         .carousel-stage {
             width: 320px;
             height: 200px;
@@ -99,6 +99,7 @@
             margin-bottom: 15px;
             margin-top: 20px;
             transform: rotateY(0deg);
+            transition: transform 0.1s ease-out;
         }
         .carousel-stage:active { cursor: grabbing; }
 
@@ -203,22 +204,20 @@
 
         <!-- Middle Selection Area -->
         <div class="middle-selection" id="carouselContainer">
-            
             <div class="carousel-stage" id="carouselStage">
                 <!-- Panel 1 (Brow Mapping) -->
                 <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(260px);">
-                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="">
+                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="Brow Mapping">
                 </div>
                 <!-- Panel 2 (Center Lashes) -->
                 <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(260px);">
-                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="">
+                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="Center Lashes">
                 </div>
                 <!-- Panel 3 (Side Angle) -->
                 <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(260px);">
-                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="">
+                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="Side Angle">
                 </div>
             </div>
-
         </div>
 
         <!-- Lower Section Content Block wrapper -->
@@ -234,63 +233,75 @@
 
     </main>
 
-    <!-- Background Audio Continuous Element (Connected to your real working file name) -->
+    <!-- Background Audio Element -->
     <audio id="salon-music" loop>
-        <source src="Original 2.PNG" type="audio/mp3">
+        <!-- CHANGED: Pointing to a standard mp3 file instead of a PNG -->
+        <source src="music.mp3" type="audio/mp3">
     </audio>
 
-    <!-- Advanced Seamless Audio Sync & Universal Swipe Rotation Logic -->
     <script>
+        // 1. Audio Sync & Autoplay Logic
         const music = document.getElementById('salon-music');
 
-        // 1. Sync ongoing background lounge time signature memory matrix
         window.addEventListener('DOMContentLoaded', () => {
             const savedTime = sessionStorage.getItem('musicCurrentTime');
             if (savedTime) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            music.play().catch(err => console.log("Memory signature synced"));
+            
+            // Try to autoplay
+            music.play().catch(err => {
+                console.log("Autoplay blocked. Waiting for user interaction to start audio.");
+            });
         });
 
-        // Wakes up sound stream the exact millisecond they touch the layout to spin her lookbook
-        function forceAudioUnmute() {
+        // Continuously track the audio time
+        music.addEventListener('timeupdate', () => {
+            sessionStorage.setItem('musicCurrentTime', music.currentTime);
+        });
+
+        // Start audio on first user click/touch if browser blocked autoplay
+        document.addEventListener('click', () => {
             if (music.paused) {
-                music.play().catch(e => console.log("Sound track streaming active across all salon pages"));
+                music.play().catch(err => console.log("Audio play failed: ", err));
             }
-            document.removeEventListener('click', forceAudioUnmute);
-            document.removeEventListener('touchstart', forceAudioUnmute);
-        }
-        document.addEventListener('click', forceAudioUnmute);
-        document.addEventListener('touchstart', forceAudioUnmute);
+        }, { once: true });
 
-        setInterval(() => {
-            if (!music.paused) { 
-                sessionStorage.setItem('musicCurrentTime', music.currentTime); 
-            }
-        }, 500);
 
-        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL TOUCH CONTROLLERS ---
-        const stage = document.getElementById('carouselStage');
+        // 2. Interactive 3D Carousel Drag/Swipe Logic
         const container = document.getElementById('carouselContainer');
+        const stage = document.getElementById('carouselStage');
         
         let isDragging = false;
         let startX = 0;
         let currentRotation = 0;
-        let baseRotation = 0;
+        let targetRotation = 0;
 
+        // Mouse Events
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - startX;
+            // Adjust the dividing number (e.g., 5) to change spin sensitivity
+            targetRotation = currentRotation + (deltaX / 5);
+            stage.style.transform = `rotateY(${targetRotation}deg)`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            currentRotation = targetRotation;
+        });
+
+        // Touch Events (For Mobile Swipe)
         container.addEventListener('touchstart', (e) => {
             isDragging = true;
-            startX = e.touches[0].clientX; // FIXED: Tracks precise finger coordinates on tablet surfaces
-            baseRotation = currentRotation;
-            stage.style.transition = 'none';
-        }, { passive: true });
+            startX = e.touches[0].clientX;
+        });
 
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaX = e.touches[0].clientX - startX; 
-            currentRotation = baseRotation + (deltaX * 0.85); // Responsive tablet swiping multiplier
-            stage.style.transform = `rotateY(${currentRotation}deg)`;
-        }, { passive: true });
-        
-        window.addEventListener('touchend', () => {
+        container.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
