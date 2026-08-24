@@ -82,7 +82,7 @@
             justify-content: center;
             align-items: center;
             padding: 30px 0;
-            perspective: 1000px; /* Gives the depth illusion */
+            perspective: 1000px; 
             overflow: hidden;
             width: 100%;
         }
@@ -213,26 +213,27 @@
     <!-- Main Content Layout Section Workspace Area -->
     <main class="main-content">
         
+        <!-- HEADER TITLE FRAME -->
         <div class="top-content">
-            <h1 class="worklounge-title">3D Vision Gallery</h1>
+            <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
         <!-- Middle Selection Workspace Area Layout block -->
         <div class="middle-selection" id="carouselContainer">
             
-            <!-- 💫 INTERACTIVE 3D 360° SPINNING STAGE -->
+            <!-- 💫 INTERACTIVE 360° SPINNING STAGE FOR THE 3D PHOTOS (NO COMING SOON TAG) -->
             <div class="carousel-stage" id="carouselStage">
                 <!-- Panel 1 (Front View Center) -->
                 <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(170px);">
-                    <img src="3d-photo1.png" alt="Luxury Lash Angle 1">
+                    <img src="3d-photo1.png" alt="Angle 1">
                 </div>
                 <!-- Panel 2 (Rotated Left Angle) -->
                 <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(170px);">
-                    <img src="3d-photo2.png" alt="Luxury Lash Angle 2">
+                    <img src="3d-photo2.png" alt="Angle 2">
                 </div>
                 <!-- Panel 3 (Rotated Right Angle) -->
                 <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(170px);">
-                    <img src="3d-photo3.png" alt="Luxury Lash Angle 3">
+                    <img src="3d-photo3.png" alt="Angle 3">
                 </div>
             </div>
 
@@ -241,7 +242,7 @@
 
         </div>
 
-        <!-- Lower Section Content Block wrapper locked higher -->
+        <!-- Lower Section Content Block wrapper locked higher up -->
         <div class="bottom-content">
             <!-- Cancellation Policy Block Frame layout section -->
             <div class="policy-card">
@@ -264,7 +265,7 @@
 
     <!-- Advanced Seamless Audio Sync & 360° Touch Spin Controller Script -->
     <script>
-        // --- 1. CONTINUOUS MUSIC TRACKER MATRIX ---
+        // --- 1. CONTINUOUS MUSIC TRACKER ---
         const music = document.getElementById('salon-music');
 
         window.addEventListener('DOMContentLoaded', () => {
