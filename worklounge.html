@@ -230,15 +230,15 @@
                     }
                 });
             }
-            // Mobile Touch Events (with scroll lock fix)
+                        // Mobile Touch Tracking Upgrade
             stage.addEventListener('touchstart', e => {
-                startX = e.touches.clientX;
+                startX = e.changedTouches[0].clientX;
                 isDragging = true;
             }, { passive: true });
 
             stage.addEventListener('touchmove', e => {
                 if (!isDragging) return;
-                let moveX = e.touches.clientX;
+                let moveX = e.changedTouches[0].clientX;
                 let diffX = startX - moveX;
 
                 if (Math.abs(diffX) > 30) { 
@@ -249,6 +249,11 @@
                     }
                     updateCarousel();
                     isDragging = false;
+                }
+            }, { passive: true });
+
+            stage.addEventListener('touchend', () => isDragging = false);
+
                 }
             });
 
