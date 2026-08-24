@@ -76,7 +76,6 @@
 
         /* Middle Selection Area: 3D 360° Interactive Carousel Space */
         .middle-selection {
-            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -85,12 +84,12 @@
             perspective: 1200px; 
             overflow: hidden;
             width: 100%;
-            touch-action: none; 
+            touch-action: pan-y; 
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* FIXED LANDSCAPE STAGE DIMENSIONS: Keeps all before & after labels perfectly uncropped! */
+        /* LANDSCAPE STAGE DIMENSIONS */
         .carousel-stage {
             width: 320px;
             height: 200px;
@@ -126,14 +125,14 @@
             pointer-events: none;
         }
 
-        /* Fixed Bottom Section Content Block wrapper locked higher up */
+        /* Fixed Bottom Section Content Block wrapper */
         .bottom-content {
-            margin-top: auto;
+            margin-top: 30px;
             padding-bottom: 40px; 
             width: 100%;
         }
 
-        /* Sleek, lower-profile Cancellation Card */
+        /* Sleek Cancellation Policy Card */
         .policy-card {
             background-color: rgba(20, 17, 31, 0.85);
             border: 1px solid #ff007f;
@@ -188,35 +187,33 @@
 </head>
 <body>
 
-    <!-- Navigation Menu Frame Link Set (Work Lounge Is Middle Tab Selection) -->
+    <!-- FIXED NAVIGATION MENU LINKS: Removed target="_blank" so the sound stream syncs seamlessly across all 3 pages inside the same browser window window! -->
     <div class="nav-tabs">
         <a href="index.html" class="nav-tab">Home Lounge</a>
         <a href="worklounge.html" class="nav-tab active">Work Lounge</a>
-        <a href="livecalendar.html" target="_blank" class="nav-tab">Live Booking</a>
+        <a href="livecalendar.html" class="nav-tab">Live Booking</a>
     </div> 
 
-    <!-- Main Content Layout Section Workspace Area -->
+    <!-- Main Content Workspace Area -->
     <main class="main-content">
         
-        <!-- HEADER TITLE FRAME -->
         <div class="top-content">
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
-        <!-- Middle Selection Workspace Area Layout block -->
+        <!-- Middle Selection Area -->
         <div class="middle-selection" id="carouselContainer">
             
-            <!-- 💫 INTERACTIVE 360° SPINNING STAGE -->
             <div class="carousel-stage" id="carouselStage">
-                <!-- Panel 1 (First View Center) -->
+                <!-- Panel 1 -->
                 <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(260px);">
                     <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="">
                 </div>
-                <!-- Panel 2 (Second View) -->
+                <!-- Panel 2 -->
                 <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(260px);">
                     <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="">
                 </div>
-                <!-- Panel 3 (Third View) -->
+                <!-- Panel 3 -->
                 <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(260px);">
                     <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="">
                 </div>
@@ -224,49 +221,47 @@
 
         </div>
 
-        <!-- Lower Section Content Block wrapper locked higher up -->
+        <!-- Lower Section Content Block wrapper -->
         <div class="bottom-content">
-            <!-- Cancellation Policy Block Frame layout section -->
             <div class="policy-card">
                 <h3>Cancellation Policy</h3>
                 <p>
                     Please note that no-shows as well as cancellations or rescheduling requests made after your appointment start time, are subject to a fee equal to 100% of the service.
                 </p>
             </div>
-
-            <!-- Direct Action Booking Button Link Trigger Section -->
-            <a href="livecalendar.html" target="_blank" class="book-now-button">Book an Appointment Now</a>  
+            <!-- FIXED: Removed target="_blank" here too so the link transitions smoothly inside the audio container! -->
+            <a href="livecalendar.html" class="book-now-button">Book an Appointment Now</a>  
         </div>
 
     </main>
 
-    <!-- FIXED AUDIO SOURCE LINK: Pointed directly to your real repository asset file name! -->
+    <!-- FIXED SOUND TRACK EXTENSION LINK: Pointed directly to your real music.mp3 track file! -->
     <audio id="salon-music" loop>
-        <source src="Original 2.PNG" type="audio/mp3">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Advanced Seamless Audio Sync & Universal Drag Controller Script -->
+    <!-- Advanced Safe Audio Sync & Universal Swipe Rotation Logic -->
     <script>
         const music = document.getElementById('salon-music');
 
-        // 1. Instantly pull and sync the ongoing track time signature from browser memory storage
+        // 1. Sync ongoing background lounge time signature memory matrix
         window.addEventListener('DOMContentLoaded', () => {
             const savedTime = sessionStorage.getItem('musicCurrentTime');
             if (savedTime) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            music.play().catch(err => console.log("Lounge track sound ready and running"));
+            music.play().catch(err => console.log("Awaiting user swipe connection trigger to sync background audio tracks"));
         });
 
-        // 2. Continuous touch start unmuters to guarantee zero phone blockages
+        // 2. Unmutes and streams audio smoothly the exact millisecond they touch the layout to spin her lookbook
         function forceAudioUnmute() {
             if (music.paused) {
-                music.play().catch(e => console.log("Sound active across all link clicks"));
+                music.play().catch(e => console.log("Sound track streaming active across all pages"));
             }
-            document.removeEventListener('pointerdown', forceAudioUnmute);
+            document.removeEventListener('click', forceAudioUnmute);
             document.removeEventListener('touchstart', forceAudioUnmute);
         }
-        document.addEventListener('pointerdown', forceAudioUnmute);
+        document.addEventListener('click', forceAudioUnmute);
         document.addEventListener('touchstart', forceAudioUnmute);
 
         setInterval(() => {
@@ -275,7 +270,7 @@
             }
         }, 500);
 
-        // --- 3. INTERACTIVE 360° CAROUSEL UNIVERSAL DRAG LOGIC ---
+        // --- 3. INTERACTIVE 360° CAROUSEL UNIVERSAL TOUCH CONTROLLERS ---
         const stage = document.getElementById('carouselStage');
         const container = document.getElementById('carouselContainer');
         
@@ -284,11 +279,13 @@
         let currentRotation = 0;
         let baseRotation = 0;
 
-        container.addEventListener('pointerdown', (e) => {
+        container.addEventListener('touchstart', (e) => {
             isDragging = true;
-            startX = e.clientX;
+            startX = e.touches[0].clientX; // FIXED: Added standard mobile indexing point to unlock tablet swipes!
             baseRotation = currentRotation;
             stage.style.transition = 'none';
-        });
-        
-        window.addEventListener('pointermove', (e) => {
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - startX; // FIXED: Tracks horizontal finger path across the mobile surface area!
