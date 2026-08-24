@@ -85,7 +85,6 @@
             perspective: 1000px; 
             overflow: hidden;
             width: 100%;
-            /* Absolute touch control guard to stop tablet browser shaking */
             touch-action: none; 
             user-select: none;
             -webkit-user-select: none;
@@ -100,6 +99,7 @@
             cursor: grab;
             margin-bottom: 15px;
             margin-top: 20px;
+            transform: rotateY(0deg);
         }
         .carousel-stage:active { cursor: grabbing; }
 
@@ -207,17 +207,17 @@
             
             <!-- 💫 INTERACTIVE 360° SPINNING STAGE -->
             <div class="carousel-stage" id="carouselStage">
-                <!-- Panel 1 (Front View Center) -->
+                <!-- Panel 1 (FIXED: Your specified brow mapping picture is now locked into the first position) -->
                 <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(170px);">
-                    <img src="3d-photo1.png" alt="">
+                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="">
                 </div>
-                <!-- Panel 2 (Rotated Left Angle) -->
+                <!-- Panel 2 (Your middle favorite angle) -->
                 <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(170px);">
-                    <img src="3d-photo2.png" alt="">
+                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="">
                 </div>
-                <!-- Panel 3 (Rotated Right Angle) -->
+                <!-- Panel 3 (Your third position angle) -->
                 <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(170px);">
-                    <img src="3d-photo3.png" alt="">
+                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="">
                 </div>
             </div>
 
@@ -244,7 +244,7 @@
         <source src="Original 2.PNG" type="audio/mp3">
     </audio>
 
-    <!-- Advanced Universal Pointer Controls to unlock Tablet Spinning -->
+    <!-- Advanced Seamless Audio Sync & Fail-Proof 360° Drag Controller Script -->
     <script>
         // --- 1. CONTINUOUS MUSIC TRACKER ---
         const music = document.getElementById('salon-music');
@@ -254,7 +254,7 @@
             if (savedTime) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            music.play().catch(err => console.log("Continuous background music track syncing active"));
+            music.play().catch(err => console.log("Music synced continuously across lounge links"));
         });
 
         setInterval(() => {
@@ -263,35 +263,39 @@
             }
         }, 500);
 
-        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL POINTER DRAG LOGIC ---
+        // --- 2. FAIL-PROOF LIGHTWEIGHT INTERACTIVE CAROUSEL SCRIPT ---
         const stage = document.getElementById('carouselStage');
         const container = document.getElementById('carouselContainer');
         
         let isDragging = false;
         let startX = 0;
         let currentRotation = 0;
-        let velocityRotation = 0;
+        let baseRotation = 0;
 
-        // FIXED: Using pointer events handles both fingers and mice perfectly on modern tablets!
         container.addEventListener('pointerdown', (e) => {
             isDragging = true;
-            container.setPointerCapture(e.pointerId); // Locks the touch focus to this block
             startX = e.clientX;
-            velocityRotation = currentRotation;
+            baseRotation = currentRotation;
             stage.style.transition = 'none';
         });
         
-        container.addEventListener('pointermove', (e) => {
+        window.addEventListener('pointermove', (e) => {
             if (!isDragging) return;
             const deltaX = e.clientX - startX;
-            currentRotation = velocityRotation + (deltaX * 0.7); 
+            currentRotation = baseRotation + (deltaX * 0.75); 
             stage.style.transform = `rotateY(${currentRotation}deg)`;
         });
         
-        container.addEventListener('pointerup', () => {
+        window.addEventListener('mouseup', () => {
             if (!isDragging) return;
             isDragging = false;
-            stage.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.85, 0.25, 1)'; // Luxury drift stop deceleration effect
+            stage.style.transition = 'transform 0.4s ease-out';
         });
 
-        container.addEventListener('pointercancel', () => {
+        window.addEventListener('pointercancel', () => {
+            isDragging = false;
+        });
+    </script>
+
+</body>
+</html>
