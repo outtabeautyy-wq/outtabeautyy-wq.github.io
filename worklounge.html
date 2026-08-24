@@ -13,7 +13,7 @@
         }
         
         body { 
-            background: linear-gradient(rgba(12, 9, 20, 0.85), rgba(12, 9, 20, 0.85)), url('worklounge.jpeg') center/cover no-repeat fixed;
+            background: linear-gradient(rgba(12, 9, 20, 0.75), rgba(12, 9, 20, 0.75)), url('worklounge.jpeg') center/cover no-repeat fixed;
             color: #f4f3f7; 
             font-family: 'Segoe UI', Arial, sans-serif; 
             line-height: 1.5; 
@@ -60,10 +60,12 @@
             width: 100%;
         }
 
+        /* Shrunk top margin to move Kira's Work Lounge up higher */
         .top-content {
-            margin-top: 25px;
+            margin-top: 15px;
         }
 
+        /* Centered Header Layout text */
         .worklounge-title {
             color: #ff007f;
             font-size: 2rem;
@@ -74,65 +76,34 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* Middle Selection Area: 3D 360° Interactive Carousel Space */
+        /* Middle Selection Area: Before & After coming soon */
         .middle-selection {
+            flex: 1;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 0;
-            perspective: 1200px; 
-            overflow: hidden;
-            width: 100%;
-            touch-action: pan-y; 
-            user-select: none;
-            -webkit-user-select: none;
+            padding: 20px 0;
         }
 
-        /* LANDSCAPE STAGE DIMENSIONS */
-        .carousel-stage {
-            width: 320px;
-            height: 200px;
-            position: relative;
-            transform-style: preserve-3d;
-            cursor: grab;
-            margin-bottom: 15px;
-            margin-top: 20px;
-            transform: rotateY(0deg);
-        }
-        .carousel-stage:active { cursor: grabbing; }
-
-        /* Individual 3D Image Panels */
-        .carousel-panel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 2px solid #ff007f;
-            box-shadow: 0 10px 30px rgba(255, 0, 127, 0.35);
-            background: #14111f;
-            backface-visibility: visible;
-            pointer-events: none; 
-        }
-        .carousel-panel img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill; 
-            display: block;
-            -webkit-user-drag: none;
+        .coming-soon-tag {
+            color: #ffffff;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: italic;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            line-height: 1.6;
         }
 
-        /* Fixed Bottom Section Content Block wrapper */
+        /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
-            margin-top: 30px;
-            padding-bottom: 40px; 
+            margin-top: auto;
+            padding-bottom: 65px; /* UPDATED: Lifted both selection cards up higher away from the absolute screen base */
             width: 100%;
         }
 
-        /* Sleek Cancellation Policy Card */
+        /* Sleek, lower-profile Cancellation Card */
         .policy-card {
             background-color: rgba(20, 17, 31, 0.85);
             border: 1px solid #ff007f;
@@ -140,7 +111,7 @@
             padding: 12px 18px; 
             text-align: left;
             box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
             backdrop-filter: blur(5px);
         }
 
@@ -174,7 +145,6 @@
             box-shadow: 0 0 20px #ff007f;
             transition: all 0.3s ease;
             width: auto;
-            box-sizing: border-box;
         }
 
         .book-now-button:hover {
@@ -187,110 +157,61 @@
 </head>
 <body>
 
-    <!-- Navigation Menu Tabs -->
+    <!-- Navigation Menu Frame Link Set (Work Lounge Is Middle Tab Selection) -->
     <div class="nav-tabs">
         <a href="index.html" class="nav-tab">Home Lounge</a>
         <a href="worklounge.html" class="nav-tab active">Work Lounge</a>
-        <a href="livecalendar.html" class="nav-tab">Live Booking</a>
+        <a href="livecalendar.html" target="_blank" class="nav-tab">Live Booking</a>
     </div> 
 
-    <!-- Main Content Workspace Area -->
+    <!-- Main Content Layout Section Workspace Area -->
     <main class="main-content">
         
         <div class="top-content">
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
-        <!-- Middle Selection Area -->
-        <div class="middle-selection" id="carouselContainer">
-            <div class="carousel-stage" id="carouselStage">
-                <!-- Panel 1 (Brow Mapping) -->
-                <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(260px);">
-                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="Brow Mapping">
-                </div>
-                <!-- Panel 2 (Center Lashes) -->
-                <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(260px);">
-                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="Center Lashes">
-                </div>
-                <!-- Panel 3 (Side Angle) -->
-                <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(260px);">
-                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="Side Angle">
-                </div>
-            </div>
+        <!-- Middle Selection Workspace Area Layout block -->
+        <div class="middle-selection">
+            <div class="coming-soon-tag">Before and After Photos<br>Coming Soon</div>
         </div>
 
-        <!-- Lower Section Content Block wrapper -->
+        <!-- Lower Section Content Block wrapper locked higher -->
         <div class="bottom-content">
+            <!-- Cancellation Policy Block Frame layout section -->
             <div class="policy-card">
                 <h3>Cancellation Policy</h3>
                 <p>
                     Please note that no-shows as well as cancellations or rescheduling requests made after your appointment start time, are subject to a fee equal to 100% of the service.
                 </p>
             </div>
-            <a href="livecalendar.html" class="book-now-button">Book an Appointment Now</a>  
+
+            <!-- Direct Action Booking Button Link Trigger Section -->
+            <a href="livecalendar.html" target="_blank" class="book-now-button">Book an Appointment Now</a>  
         </div>
 
     </main>
 
-    <!-- FIXED MUSIC TRACK SOURCE: Pointed directly to your clean music.mp3 track file! -->
+    <!-- Background Audio Element -->
     <audio id="salon-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Advanced Seamless Audio Sync & Fail-Proof 360° Drag Script -->
+    <!-- Interactive Touch Control Script -->
     <script>
-        const music = document.getElementById('salon-music');
-
-        // 1. Sync ongoing background lounge track time signature memory matrix
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTime = sessionStorage.getItem('musicCurrentTime');
-            if (savedTime && !isNaN(savedTime)) { 
-                music.currentTime = parseFloat(savedTime); 
-            }
-            music.play().catch(err => console.log("Memory signature synced"));
-        });
-
-        // Wakes up sound stream the exact millisecond they touch the layout to spin her lookbook
-        function forceAudioUnmute() {
-            if (music.paused) {
-                music.play().catch(e => console.log("Sound track streaming active across all salon pages"));
-            }
-            document.removeEventListener('click', forceAudioUnmute);
-            document.removeEventListener('touchstart', forceAudioUnmute);
+        function playSalonMusic() {
+            var track = document.getElementById("salon-music");
+            track.play().catch(function(e) {
+                console.log("Autoplay paused by browser security policy.");
+            });
+            document.removeEventListener('click', playSalonMusic);
+            document.removeEventListener('touchstart', playSalonMusic);
+            document.removeEventListener('scroll', playSalonMusic);
         }
-        document.addEventListener('click', forceAudioUnmute);
-        document.addEventListener('touchstart', forceAudioUnmute);
+        document.addEventListener('click', playSalonMusic);
+        document.addEventListener('touchstart', playSalonMusic);
+        document.addEventListener('scroll', playSalonMusic);
+    </script>
 
-        setInterval(() => {
-            if (!music.paused) { 
-                sessionStorage.setItem('musicCurrentTime', music.currentTime); 
-            }
-        }, 500);
-
-        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL TOUCH CONTROLLERS ---
-        const stage = document.getElementById('carouselStage');
-        const container = document.getElementById('carouselContainer');
-        
-        let isDragging = false;
-        let startX = 0;
-        let currentRotation = 0;
-        let baseRotation = 0;
-
-        container.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            startX = e.touches[0].clientX; 
-            baseRotation = currentRotation;
-            stage.style.transition = 'none';
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaX = e.touches[0].clientX - startX; 
-            currentRotation = baseRotation + (deltaX * 0.85); 
-            stage.style.transform = `rotateY(${currentRotation}deg)`;
-        }, { passive: true });
-        
-        window.addEventListener('touchend', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            stage.style.transition = 'transform 0.4s ease-out'; 
+</body>
+</html>
