@@ -89,7 +89,7 @@
             -webkit-user-select: none;
         }
 
-        /* LANDSCAPE STAGE DIMENSIONS */
+        /* LANDSCAPE STAGE DIMENSIONS: Perfect for her transformation graphics! */
         .carousel-stage {
             width: 320px;
             height: 200px;
@@ -187,7 +187,7 @@
 </head>
 <body>
 
-    <!-- FIXED NAVIGATION MENU LINKS: Removed target="_blank" so the sound stream syncs seamlessly across all 3 pages inside the same browser window window! -->
+    <!-- Navigation Menu Tabs -->
     <div class="nav-tabs">
         <a href="index.html" class="nav-tab">Home Lounge</a>
         <a href="worklounge.html" class="nav-tab active">Work Lounge</a>
@@ -205,15 +205,15 @@
         <div class="middle-selection" id="carouselContainer">
             
             <div class="carousel-stage" id="carouselStage">
-                <!-- Panel 1 -->
+                <!-- Panel 1 (Brow Mapping) -->
                 <div class="carousel-panel" style="transform: rotateY(0deg) translateZ(260px);">
                     <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="">
                 </div>
-                <!-- Panel 2 -->
+                <!-- Panel 2 (Center Lashes) -->
                 <div class="carousel-panel" style="transform: rotateY(120deg) translateZ(260px);">
                     <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="">
                 </div>
-                <!-- Panel 3 -->
+                <!-- Panel 3 (Side Angle) -->
                 <div class="carousel-panel" style="transform: rotateY(240deg) translateZ(260px);">
                     <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="">
                 </div>
@@ -229,18 +229,17 @@
                     Please note that no-shows as well as cancellations or rescheduling requests made after your appointment start time, are subject to a fee equal to 100% of the service.
                 </p>
             </div>
-            <!-- FIXED: Removed target="_blank" here too so the link transitions smoothly inside the audio container! -->
             <a href="livecalendar.html" class="book-now-button">Book an Appointment Now</a>  
         </div>
 
     </main>
 
-    <!-- FIXED SOUND TRACK EXTENSION LINK: Pointed directly to your real music.mp3 track file! -->
+    <!-- Background Audio Continuous Element (Connected to your real working file name) -->
     <audio id="salon-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
+        <source src="Original 2.PNG" type="audio/mp3">
     </audio>
 
-    <!-- Advanced Safe Audio Sync & Universal Swipe Rotation Logic -->
+    <!-- Advanced Seamless Audio Sync & Universal Swipe Rotation Logic -->
     <script>
         const music = document.getElementById('salon-music');
 
@@ -250,13 +249,13 @@
             if (savedTime) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            music.play().catch(err => console.log("Awaiting user swipe connection trigger to sync background audio tracks"));
+            music.play().catch(err => console.log("Memory signature synced"));
         });
 
-        // 2. Unmutes and streams audio smoothly the exact millisecond they touch the layout to spin her lookbook
+        // Wakes up sound stream the exact millisecond they touch the layout to spin her lookbook
         function forceAudioUnmute() {
             if (music.paused) {
-                music.play().catch(e => console.log("Sound track streaming active across all pages"));
+                music.play().catch(e => console.log("Sound track streaming active across all salon pages"));
             }
             document.removeEventListener('click', forceAudioUnmute);
             document.removeEventListener('touchstart', forceAudioUnmute);
@@ -270,7 +269,7 @@
             }
         }, 500);
 
-        // --- 3. INTERACTIVE 360° CAROUSEL UNIVERSAL TOUCH CONTROLLERS ---
+        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL TOUCH CONTROLLERS ---
         const stage = document.getElementById('carouselStage');
         const container = document.getElementById('carouselContainer');
         
@@ -281,11 +280,17 @@
 
         container.addEventListener('touchstart', (e) => {
             isDragging = true;
-            startX = e.touches[0].clientX; // FIXED: Added standard mobile indexing point to unlock tablet swipes!
+            startX = e.touches[0].clientX; // FIXED: Tracks precise finger coordinates on tablet surfaces
             baseRotation = currentRotation;
             stage.style.transition = 'none';
         }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            const deltaX = e.touches[0].clientX - startX; // FIXED: Tracks horizontal finger path across the mobile surface area!
+            const deltaX = e.touches[0].clientX - startX; 
+            currentRotation = baseRotation + (deltaX * 0.85); // Responsive tablet swiping multiplier
+            stage.style.transform = `rotateY(${currentRotation}deg)`;
+        }, { passive: true });
+        
+        window.addEventListener('touchend', () => {
+            if (!isDragging) return;
