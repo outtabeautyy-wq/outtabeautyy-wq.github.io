@@ -218,71 +218,7 @@
         document.addEventListener('touchstart', playSalonMusic);
         document.addEventListener('scroll', playSalonMusic);
     </script>
-<!-- 1. THE 3D PICTURE CARDS CONTAINER -->
-<div style="text-align: center; padding: 40px 20px; background: #faf8f5;">
-  <h2 style="font-family: 'Playfair Display', serif; letter-spacing: 2px; text-transform: uppercase;">The 3D Vision Gallery</h2>
-  <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto;">
-    <div style="flex: 1; min-width: 220px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);"><img src="3d-photo1.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
-    <div style="flex: 1; min-width: 220px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);"><img src="3d-photo2.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
-    <div style="flex: 1; min-width: 220px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);"><img src="3d-photo3.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
-  </div>
-</div>
 
-<!-- 2. THE CONTINUOUS MUSIC PLAYER (PASTE AT THE VERY BOTTOM RIGHT BEFORE </body>) -->
-<audio id="bgMusic" loop><source src="worklounge-theme.mp3" type="audio/mp3"></audio>
-<script>
-  const music = document.getElementById('bgMusic');
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedTime = sessionStorage.getItem('musicCurrentTime');
-    if (savedTime) { music.currentTime = parseFloat(savedTime); }
-    music.play().catch(err => console.log("Click to play music"));
-  });
-  setInterval(() => {
-    if (!music.paused) { sessionStorage.setItem('musicCurrentTime', music.currentTime); }
-  }, 500);
-</script>
-<!-- Premium 360° 3D Before & After Section (Teaser Stage) -->
-<div class="luxury-360-wrapper" style="text-align: center; padding: 80px 20px; background: #faf8f5;">
-  
-  <!-- Interactive Modern Style Card -->
-  <div style="max-width: 600px; margin: 0 auto; padding: 60px 40px; background: #ffffff; border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.03); border: 1px solid #eae5df;">
-    
-    <p style="font-family: 'Montserrat', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #b5a494; margin-bottom: 15px; font-weight: 600;">
-      Interactive Experience
-    </p>
-    
-    <h2 style="font-family: 'Playfair Display', serif; font-size: 26px; color: #222; letter-spacing: 1px; margin-bottom: 10px; font-weight: 400; text-transform: uppercase;">
-      360° 3D Transformations
-    </h2>
-    
-    <p style="font-family: 'Montserrat', sans-serif; font-size: 13px; color: #999; letter-spacing: 1px; margin-bottom: 25px;">
-      Before & After Gallery
-    </p>
-    
-    <!-- Elegant Minimalist Diamond Divider -->
-    <div style="font-size: 10px; color: #b5a494; margin-bottom: 30px; letter-spacing: 5px;">✦ ✦ ✦</div>
-    
-    <p style="font-family: 'Playfair Display', serif; font-size: 20px; color: #333; letter-spacing: 1px; font-style: italic; margin: 0; font-weight: 300;">
-      Coming Soon
-    </p>
-
-  </div>
-
-</div>
-
-<!-- The Continuous Music Player (Keep resting safely at the very bottom right before </body>) -->
-<audio id="bgMusic" loop><source src="worklounge-theme.mp3" type="audio/mp3"></audio>
-<script>
-  const music = document.getElementById('bgMusic');
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedTime = sessionStorage.getItem('musicCurrentTime');
-    if (savedTime) { music.currentTime = parseFloat(savedTime); }
-    music.play().catch(err => console.log("Lounge background music active"));
-  });
-  setInterval(() => {
-    if (!music.paused) { sessionStorage.setItem('musicCurrentTime', music.currentTime); }
-  }, 500);
-</script>
 
 </body>
 </html>
