@@ -230,18 +230,18 @@
                     }
                 });
             }
-
+            // Mobile Touch Events (with scroll lock fix)
             stage.addEventListener('touchstart', e => {
                 startX = e.touches.clientX;
                 isDragging = true;
-            });
+            }, { passive: true });
 
             stage.addEventListener('touchmove', e => {
                 if (!isDragging) return;
                 let moveX = e.touches.clientX;
                 let diffX = startX - moveX;
 
-                if (Math.abs(diffX) > 40) { 
+                if (Math.abs(diffX) > 30) { 
                     if (diffX > 0) {
                         currentIndex = (currentIndex + 1) % cards.length; 
                     } else {
@@ -253,8 +253,33 @@
             });
 
             stage.addEventListener('touchend', () => isDragging = false);
+
+            // Desktop Mouse Dragging Events
+            stage.addEventListener('mousedown', e => {
+                startX = e.clientX;
+                isDragging = true;
+            });
+
+            stage.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                let diffX = startX - e.clientX;
+                if (Math.abs(diffX) > 30) {
+                    if (diffX > 0) {
+                        currentIndex = (currentIndex + 1) % cards.length;
+                    } else {
+                        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+                    }
+                    updateCarousel();
+                    isDragging = false;
+                }
+            });
+
+            window.addEventListener('mouseup', () => isDragging = false);
+
             updateCarousel();
         </script>
+
+          
 
         
 
