@@ -74,31 +74,6 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* Audio Interaction Control Overlay Button */
-        .audio-control-container {
-            margin-top: 10px;
-            z-index: 1001;
-        }
-        .audio-btn {
-            background-color: rgba(20, 17, 31, 0.9);
-            color: #ff007f;
-            border: 2px solid #ff007f;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
-            transition: all 0.3s ease;
-        }
-        .audio-btn:hover {
-            background-color: #ff007f;
-            color: #ffffff;
-            box-shadow: 0 0 15px #ff007f;
-        }
-
         /* Middle Selection Area: 3D 360° Interactive Carousel Space */
         .middle-selection {
             display: flex;
@@ -109,7 +84,7 @@
             perspective: 1200px; 
             overflow: hidden;
             width: 100%;
-            touch-action: pan-y; 
+            touch-action: none; /* Stops mobile browsers from hijacking your swipes */
             user-select: none;
             -webkit-user-select: none;
         }
@@ -140,14 +115,14 @@
             box-shadow: 0 10px 30px rgba(255, 0, 127, 0.35);
             background: #14111f;
             backface-visibility: visible;
-            -webkit-user-drag: none;
+            pointer-events: none; /* Crucial: stops image drag overlays from freezing swipes */
         }
         .carousel-panel img {
             width: 100%;
             height: 100%;
             object-fit: fill; 
             display: block;
-            pointer-events: none;
+            -webkit-user-drag: none;
         }
 
         /* Fixed Bottom Section Content Block wrapper */
@@ -226,11 +201,6 @@
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
-        <!-- Explicit Audio Unblock Control -->
-        <div class="audio-control-container">
-            <button class="audio-btn" id="audioToggleBtn">🎵 Play Music</button>
-        </div>
-
         <!-- Middle Selection Area -->
         <div class="middle-selection" id="carouselContainer">
             <div class="carousel-stage" id="carouselStage">
@@ -269,38 +239,56 @@
 
     <script>
         // -------------------------------------------------------------
-        // 1. FIXED AUDIO INTERACTION ENGINE
+        // 1. INVISIBLE AUDIO BACKGROUND ENGINE
         // -------------------------------------------------------------
         const music = document.getElementById('salon-music');
-        const audioBtn = document.getElementById('audioToggleBtn');
 
-        // Sync timeline tracking matrix memory
         window.addEventListener('DOMContentLoaded', () => {
             const savedTime = sessionStorage.getItem('musicCurrentTime');
             if (savedTime && !isNaN(savedTime)) { 
                 music.currentTime = parseFloat(savedTime); 
             }
+            // Auto force option
+            music.play().catch(() => {});
         });
 
         music.addEventListener('timeupdate', () => {
             sessionStorage.setItem('musicCurrentTime', music.currentTime);
         });
 
-        // Toggle function that strictly overrides mobile security blockades
-        function toggleAudio() {
+        // Plays instantly the exact split second a user touches anywhere on screen
+        function unlockAudioEngine() {
             if (music.paused) {
-                music.play()
-                    .then(() => {
-                        audioBtn.innerText = "⏸ Pause Music";
-                    })
-                    .catch(err => {
-                        console.log("Playback engine error: ", err);
-                    });
-            } else {
-                music.pause();
-                audioBtn.innerText = "🎵 Play Music";
+                music.play().catch(e => console.log("Audio unlock hold:", e));
             }
+            document.removeEventListener('click', unlockAudioEngine);
+            document.removeEventListener('touchstart', unlockAudioEngine);
         }
+        document.addEventListener('click', unlockAudioEngine);
+        document.addEventListener('touchstart', unlockAudioEngine, { passive: true });
 
-        audioBtn.addEventListener('click', toggleAudio);
-        // Secondary backup to catch basic global surface clicks
+
+        // -------------------------------------------------------------
+        // 2. FIXED 3D CAROUSEL AUTOMATIC SPIN & TOUCH TRANSLATION LOGIC
+        // -------------------------------------------------------------
+        const container = document.getElementById('carouselContainer');
+        const stage = document.getElementById('carouselStage');
+        
+        let isDragging = false;
+        let startX = 0;
+        let currentRotation = 0;
+        let targetRotation = 0;
+        let autoSpinVelocity = 0.3; // Speed of slow rotation when idle
+
+        // Continuous Loop Render Step
+        function updateCarouselLoop() {
+            if (!isDragging) {
+                currentRotation -= autoSpinVelocity; 
+                targetRotation = currentRotation;
+                stage.style.transform = `rotateY(${currentRotation}deg)`;
+            }
+            requestAnimationFrame(updateCarouselLoop);
+        }
+        requestAnimationFrame(updateCarouselLoop);
+
+        // --- MOUSE TRACKING ---
