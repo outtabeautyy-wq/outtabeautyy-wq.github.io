@@ -76,30 +76,20 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* Middle Selection Area: Before & After coming soon */
+        /* Middle Selection Area */
         .middle-selection {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px 0;
         }
 
-        .coming-soon-tag {
-            color: #ffffff;
-            font-size: 1.3rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-style: italic;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            line-height: 1.6;
-        }
-
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
             margin-top: auto;
-            padding-bottom: 65px; /* UPDATED: Lifted both selection cards up higher away from the absolute screen base */
+            padding-bottom: 65px; 
             width: 100%;
         }
 
@@ -153,16 +143,25 @@
             box-shadow: 0 0 30px #ffffff;
             transform: scale(1.05);
         }
+
+        /* Interaction hint indicator text */
+        .swipe-hint-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ff007f;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Navigation Menu Frame Link Set (Work Lounge Is Middle Tab Selection) -->
+    <!-- Navigation Menu Frame Link Set -->
     <div class="nav-tabs">
         <a href="index.html" class="nav-tab">Home Lounge</a>
         <a href="worklounge.html" class="nav-tab active">Work Lounge</a>
         <a href="livecalendar.html" target="_blank" class="nav-tab">Live Booking</a>
-    </div> 
+    </div>  
 
     <!-- Main Content Layout Section Workspace Area -->
     <main class="main-content">
@@ -170,123 +169,32 @@
         <div class="top-content">
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
+
         <!-- Middle Selection Workspace Area Layout block -->
-        <div class="middle-selection" style="text-align: center; overflow: hidden; padding: 20px 0;">
+        <div class="middle-selection">
             
-            <!-- 3D Carousel Stage - Made wider for large card dimensions -->
-            <div id="carouselStage" style="position: relative; width: 100%; max-width: 650px; height: 350px; margin: 0 auto; display: flex; justify-content: center; align-items: center; perspective: 1000px;">
+            <!-- 3D Carousel Stage with spatial hardware acceleration rules -->
+            <div id="carouselStage" style="position: relative; width: 100%; max-width: 650px; height: 350px; margin: 0 auto; display: flex; justify-content: center; align-items: center; perspective: 1200px; transform-style: preserve-3d;">
                 
                 <!-- Card 1 -->
-                <div class="carousel-card" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: all 0.4s ease; cursor: pointer; user-select: none;">
+                <div class="carousel-card" data-index="0" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease; cursor: pointer; user-select: none; backface-visibility: hidden;">
                     <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" style="width: 100%; height: 100%; object-fit: contain; background: #0c0914; pointer-events: none;">
                 </div>
                 
                 <!-- Card 2 -->
-                <div class="carousel-card" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: all 0.4s ease; cursor: pointer; user-select: none;">
+                <div class="carousel-card" data-index="1" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease; cursor: pointer; user-select: none; backface-visibility: hidden;">
                     <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" style="width: 100%; height: 100%; object-fit: contain; background: #0c0914; pointer-events: none;">
                 </div>
                 
                 <!-- Card 3 -->
-                <div class="carousel-card" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: all 0.4s ease; cursor: pointer; user-select: none;">
+                <div class="carousel-card" data-index="2" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease; cursor: pointer; user-select: none; backface-visibility: hidden;">
                     <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" style="width: 100%; height: 100%; object-fit: contain; background: #0c0914; pointer-events: none;">
                 </div>
                 
             </div>
+
+            <div class="swipe-hint-label">🩷 SWIPE OR CLICK TO EXPLORE 🩷</div>
         </div>
-
-        <script>
-            const stage = document.getElementById('carouselStage');
-            const cards = Array.from(document.querySelectorAll('.carousel-card'));
-            let currentIndex = 0;
-            let startX = 0;
-            let isDragging = false;
-
-            function updateCarousel() {
-                cards.forEach((card, index) => {
-                    let offset = index - currentIndex;
-                    
-                    if (offset < -1) offset += cards.length;
-                    if (offset > 1) offset -= cards.length;
-
-                    if (offset === 0) {
-                        card.style.transform = "translateX(0) scale(1) translateZ(0px)";
-                        card.style.zIndex = "10";
-                        card.style.opacity = "1";
-                        card.style.filter = "none";
-                    } else if (offset === 1 || offset === -2) {
-                        card.style.transform = "translateX(145px) scale(0.72) rotateY(-20deg)";
-                        card.style.zIndex = "5";
-                        card.style.opacity = "0.35";
-                        card.style.filter = "blur(1px)";
-                    } else if (offset === -1 || offset === 2) {
-                        card.style.transform = "translateX(-145px) scale(0.72) rotateY(20deg)";
-                        card.style.zIndex = "5";
-                        card.style.opacity = "0.35";
-                        card.style.filter = "blur(1px)";
-                    } else {
-                        card.style.transform = "translateX(0) scale(0.5) translateZ(-200px)";
-                        card.style.zIndex = "1";
-                        card.style.opacity = "0";
-                    }
-                });
-            }
-                        // Mobile Touch Tracking Upgrade
-            stage.addEventListener('touchstart', e => {
-                startX = e.changedTouches[0].clientX;
-                isDragging = true;
-            }, { passive: true });
-
-            stage.addEventListener('touchmove', e => {
-                if (!isDragging) return;
-                let moveX = e.changedTouches[0].clientX;
-                let diffX = startX - moveX;
-
-                if (Math.abs(diffX) > 30) { 
-                    if (diffX > 0) {
-                        currentIndex = (currentIndex + 1) % cards.length; 
-                    } else {
-                        currentIndex = (currentIndex - 1 + cards.length) % cards.length; 
-                    }
-                    updateCarousel();
-                    isDragging = false;
-                }
-            }, { passive: true });
-
-            stage.addEventListener('touchend', () => isDragging = false);
-
-                }
-            });
-
-            stage.addEventListener('touchend', () => isDragging = false);
-
-            // Desktop Mouse Dragging Events
-            stage.addEventListener('mousedown', e => {
-                startX = e.clientX;
-                isDragging = true;
-            });
-
-            stage.addEventListener('mousemove', e => {
-                if (!isDragging) return;
-                let diffX = startX - e.clientX;
-                if (Math.abs(diffX) > 30) {
-                    if (diffX > 0) {
-                        currentIndex = (currentIndex + 1) % cards.length;
-                    } else {
-                        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-                    }
-                    updateCarousel();
-                    isDragging = false;
-                }
-            });
-
-            window.addEventListener('mouseup', () => isDragging = false);
-
-            updateCarousel();
-        </script>
-
-          
-
-        
 
         <!-- Lower Section Content Block wrapper locked higher -->
         <div class="bottom-content">
@@ -309,21 +217,37 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Interactive Touch Control Script -->
+    <!-- Interactive 3D Controller & Audio Script -->
     <script>
-        function playSalonMusic() {
-            var track = document.getElementById("salon-music");
-            track.play().catch(function(e) {
-                console.log("Autoplay paused by browser security policy.");
-            });
-            document.removeEventListener('click', playSalonMusic);
-            document.removeEventListener('touchstart', playSalonMusic);
-            document.removeEventListener('scroll', playSalonMusic);
-        }
-        document.addEventListener('click', playSalonMusic);
-        document.addEventListener('touchstart', playSalonMusic);
-        document.addEventListener('scroll', playSalonMusic);
-    </script>
+        const stage = document.getElementById('carouselStage');
+        const cards = Array.from(document.querySelectorAll('.carousel-card'));
+        let currentIndex = 0;
+        let startX = 0;
+        let isDragging = false;
 
-</body>
-</html>
+        function updateCarousel() {
+            cards.forEach((card, index) => {
+                let offset = index - currentIndex;
+                
+                if (offset < -1) offset += cards.length;
+                if (offset > 1) offset -= cards.length;
+
+                if (offset === 0) {
+                    // Center Card: Pulled Forward
+                    card.style.transform = "translateX(0) translateZ(100px) scale(1) rotateY(0deg)";
+                    card.style.zIndex = "10";
+                    card.style.opacity = "1";
+                    card.style.filter = "none";
+                } else if (offset === 1 || offset === -2) {
+                    // Right Card: Pushed Back & Tilted Inward
+                    card.style.transform = "translateX(160px) translateZ(-150px) scale(0.82) rotateY(-30deg)";
+                    card.style.zIndex = "5";
+                    card.style.opacity = "0.45";
+                    card.style.filter = "blur(1px)";
+                } else if (offset === -1 || offset === 2) {
+                    // Left Card: Pushed Back & Tilted Inward
+                    card.style.transform = "translateX(-160px) translateZ(-150px) scale(0.82) rotateY(30deg)";
+                    card.style.zIndex = "5";
+                    card.style.opacity = "0.45";
+                    card.style.filter = "blur(1px)";
+                } else {
