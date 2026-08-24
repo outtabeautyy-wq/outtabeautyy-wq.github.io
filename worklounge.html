@@ -170,11 +170,95 @@
         <div class="top-content">
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
-
         <!-- Middle Selection Workspace Area Layout block -->
-        <div class="middle-selection">
-            <div class="coming-soon-tag">Before and After Photos<br>Coming Soon</div>
+        <div class="middle-selection" style="text-align: center; overflow: hidden; padding: 20px 0;">
+            <h2 style="color: #ff007f; font-size: 1.5rem; margin-bottom: 5px; text-shadow: 0 0 10px #ff007f;">Our Work Showcase</h2>
+            <p style="color: #8a8894; font-size: 0.85rem; margin-bottom: 25px;">Swipe left or right to rotate through styles</p>
+            
+            <!-- 3D Carousel Stage -->
+            <div id="carouselStage" style="position: relative; width: 100%; max-width: 500px; height: 320px; margin: 0 auto; display: flex; justify-content: center; align-items: center; perspective: 1000px;">
+                
+                <!-- Card 1 -->
+                <div class="carousel-card" style="position: absolute; width: 220px; height: 280px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: all 0.4s ease; cursor: pointer; user-select: none;">
+                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="carousel-card" style="position: absolute; width: 220px; height: 280px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: all 0.4s ease; cursor: pointer; user-select: none;">
+                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="carousel-card" style="position: absolute; width: 220px; height: 280px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: all 0.4s ease; cursor: pointer; user-select: none;">
+                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                </div>
+                
+            </div>
         </div>
+
+        <script>
+            const stage = document.getElementById('carouselStage');
+            const cards = Array.from(document.querySelectorAll('.carousel-card'));
+            let currentIndex = 0;
+            let startX = 0;
+            let isDragging = false;
+
+            function updateCarousel() {
+                cards.forEach((card, index) => {
+                    let offset = index - currentIndex;
+                    
+                    if (offset < -1) offset += cards.length;
+                    if (offset > 1) offset -= cards.length;
+
+                    if (offset === 0) {
+                        card.style.transform = "translateX(0) scale(1) translateZ(0px)";
+                        card.style.zIndex = "10";
+                        card.style.opacity = "1";
+                        card.style.filter = "none";
+                    } else if (offset === 1 || offset === -2) {
+                        card.style.transform = "translateX(110px) scale(0.8) rotateY(-15deg)";
+                        card.style.zIndex = "5";
+                        card.style.opacity = "0.6";
+                        card.style.filter = "blur(1px)";
+                    } else if (offset === -1 || offset === 2) {
+                        card.style.transform = "translateX(-110px) scale(0.8) rotateY(15deg)";
+                        card.style.zIndex = "5";
+                        card.style.opacity = "0.6";
+                        card.style.filter = "blur(1px)";
+                    } else {
+                        card.style.transform = "translateX(0) scale(0.5) translateZ(-200px)";
+                        card.style.zIndex = "1";
+                        card.style.opacity = "0";
+                    }
+                });
+            }
+
+            stage.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+
+            stage.addEventListener('touchmove', e => {
+                if (!isDragging) return;
+                let moveX = e.touches[0].clientX;
+                let diffX = startX - moveX;
+
+                if (Math.abs(diffX) > 40) { 
+                    if (diffX > 0) {
+                        currentIndex = (currentIndex + 1) % cards.length; 
+                    } else {
+                        currentIndex = (currentIndex - 1 + cards.length) % cards.length; 
+                    }
+                    updateCarousel();
+                    isDragging = false;
+                }
+            });
+
+            stage.addEventListener('touchend', () => isDragging = false);
+            updateCarousel();
+        </script>
+
+        
 
         <!-- Lower Section Content Block wrapper locked higher -->
         <div class="bottom-content">
