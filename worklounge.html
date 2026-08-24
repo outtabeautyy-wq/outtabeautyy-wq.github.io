@@ -13,7 +13,6 @@
         }
         
         body { 
-            /* YOUR GORGEOUS STUDIO BACKGROUND PICTURE IS LOCKED HERE */
             background: linear-gradient(rgba(12, 9, 20, 0.85), rgba(12, 9, 20, 0.85)), url('worklounge.jpeg') center/cover no-repeat fixed;
             color: #f4f3f7; 
             font-family: 'Segoe UI', Arial, sans-serif; 
@@ -86,6 +85,7 @@
             perspective: 1000px; 
             overflow: hidden;
             width: 100%;
+            /* Absolute touch control guard to stop tablet browser shaking */
             touch-action: none; 
             user-select: none;
             -webkit-user-select: none;
@@ -97,7 +97,6 @@
             height: 240px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.1s linear; 
             cursor: grab;
             margin-bottom: 15px;
             margin-top: 20px;
@@ -245,7 +244,7 @@
         <source src="Original 2.PNG" type="audio/mp3">
     </audio>
 
-    <!-- Advanced Seamless Audio Sync & 360° Touch Spin Controller Script -->
+    <!-- Advanced Universal Pointer Controls to unlock Tablet Spinning -->
     <script>
         // --- 1. CONTINUOUS MUSIC TRACKER ---
         const music = document.getElementById('salon-music');
@@ -255,7 +254,7 @@
             if (savedTime) { 
                 music.currentTime = parseFloat(savedTime); 
             }
-            music.play().catch(err => console.log("Music synced continuously across lounge links"));
+            music.play().catch(err => console.log("Continuous background music track syncing active"));
         });
 
         setInterval(() => {
@@ -264,7 +263,7 @@
             }
         }, 500);
 
-        // --- 2. INTERACTIVE 360° CAROUSEL SWIPE LOGIC ---
+        // --- 2. INTERACTIVE 360° CAROUSEL UNIVERSAL POINTER DRAG LOGIC ---
         const stage = document.getElementById('carouselStage');
         const container = document.getElementById('carouselContainer');
         
@@ -273,27 +272,26 @@
         let currentRotation = 0;
         let velocityRotation = 0;
 
-        // Touch Phone Screens & Mouse Drag Bindings
-        container.addEventListener('mousedown', startDrag);
-        container.addEventListener('touchstart', startDrag);
-        
-        window.addEventListener('mousemove', dragMove);
-        window.addEventListener('touchmove', dragMove, { passive: false });
-        
-        window.addEventListener('mouseup', endDrag);
-        window.addEventListener('touchend', endDrag);
-
-        function startDrag(e) {
+        // FIXED: Using pointer events handles both fingers and mice perfectly on modern tablets!
+        container.addEventListener('pointerdown', (e) => {
             isDragging = true;
-            startX = e.pageX || e.touches[0].pageX; // FIXED: Maps the first finger touch tracker point perfectly!
+            container.setPointerCapture(e.pointerId); // Locks the touch focus to this block
+            startX = e.clientX;
             velocityRotation = currentRotation;
-            stage.style.transition = 'none'; 
-        }
-
-        function dragMove(e) {
+            stage.style.transition = 'none';
+        });
+        
+        container.addEventListener('pointermove', (e) => {
             if (!isDragging) return;
-            if(e.cancelable) e.preventDefault(); 
-            
-            const x = e.pageX || e.touches[0].pageX; // FIXED: Tracks the touch movement coordinate systems smoothly!
-            const deltaX = x - startX;
-            
+            const deltaX = e.clientX - startX;
+            currentRotation = velocityRotation + (deltaX * 0.7); 
+            stage.style.transform = `rotateY(${currentRotation}deg)`;
+        });
+        
+        container.addEventListener('pointerup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            stage.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.85, 0.25, 1)'; // Luxury drift stop deceleration effect
+        });
+
+        container.addEventListener('pointercancel', () => {
