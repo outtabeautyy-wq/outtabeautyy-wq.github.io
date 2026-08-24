@@ -1,1 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outta Beauty | Luxury Lash, Brow &amp; Bar Lounge</title>
+    <style>
+        body { 
+            background-color: #0c0914; 
+            color: #f4f3f7; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.5; 
+            text-align: center;
+        }
 
+        /* Top Navigation Menu Frame */
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background: #000000;
+            border-bottom: 2px solid #ff007f;
+            padding: 12px 0;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-tab {
+            color: #8a8894;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-tab.active { color: #ff007f; }
+        .nav-tab:hover { color: #ffffff; }
+
+        /* Main Dynamic Layout Banner Cover Image */
+        .cover-photo {
+            width: 100%;
+            height: 35vh;
+            background: linear-gradient(rgba(12, 9, 20, 0.1), rgba(12, 9, 20, 0.1)), url('Original%202.PNG') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-shadow: 0 0 15px #ff007f;
+        }
+
+        /* Custom Luxury Welcome Section */
+        .music-section {
+            margin: 30px auto;
+            max-width: 450px;
+            padding: 25px;
+            background: #14111f;
+            border-radius: 16px;
+            border: 1px solid #ff007f;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+        .music-section h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: #ff007f; letter-spacing: 2px; text-transform: uppercase; }
+        .music-section p { margin: 0; font-size: 0.95rem; color: #f4f3f7; font-style: italic; }
+
+        /* Natively Swipable Layout Frame via CSS Scroll Snap */
+        .slider {
+            max-width: 600px;
+            margin: 30px auto 60px auto;
+            overflow-x: auto; 
+            overflow-y: hidden;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            background-color: #14111f;
+            scroll-snap-type: x mandatory; 
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hide raw horizontal browser scrollbars while keeping swipe feature live */
+        .slider::-webkit-scrollbar {
+            display: none;
+        }
+        .slider {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+
+        .slides {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Standard Slide Layout Configuration */
+        .slide-item {
+            min-width: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: start; 
+        }
+
+        .slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #14111f;
+        }
+
+        /* Frame Container to position text over the 6th image */
+        .image-overlay-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #14111f;
+        }
+
+        /* Custom Text Overlay for "Book Now!" label shifted right */
+        .photo-text-label {
+            position: absolute;
+            top: 50%;
+            right: 12%; 
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0px 4px 15px #ff007f, 0px 0px 30px #000000;
+            pointer-events: none; 
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Updated Navigation Menu: Work Lounge Second -->
+    <div class="nav-tabs">
+        <a href="index.html" class="nav-tab active">Home Lounge</a>
+        <a href="worklounge.html" class="nav-tab">Work Lounge</a>
+        <a href="livecalendar.html" target="_blank" class="nav-tab">Live Booking</a>
+    </div> 
+    
+    <!-- Main Layout Cover Image -->
+    <div class="cover-photo">
+        OUTTA BEAUTY
+    </div>
+    
+    <!-- Custom Luxury Section -->
+    <div class="music-section">
+        <h3>Lounge Station</h3>
+        <p style="font-size: 0.8rem; white-space: nowrap;">🩷 VIBE WITH KIRA DURING YOUR LUXURY SESSION 🩷</p>
+    </div>
+
+    <!-- Main Native Swipe + Autoplay 6-Image Slideshow Frame -->
+    <div class="slider" id="lounge-slider">
+        <div class="slides">
+            <div class="slide-item"><img src="sister.png" alt="Her Portrait First"></div>
+            <div class="slide-item"><img src="1785597649850.png" alt="Showcase 1"></div>
+            <div class="slide-item"><img src="1785596904014.png" alt="New Showcase 2"></div>
+            <div class="slide-item"><img src="1785682282832.jpg" alt="Showcase 3"></div>
+            <div class="slide-item"><img src="socials.jpeg" alt="Outta Beauty Socials"></div>
+            <div class="slide-item">
+                <!-- Frame for image 6 containing the unclickable "Book Now!" label -->
+                <div class="image-overlay-container">
+                    <img src="IMG_0396.JPEG" alt="Last Showcase Picture with Book Now label">
+                    <div class="photo-text-label">Book Now!</div>
+                </div>
+            </div>
+        </div>
+    </div>    <!-- NEW INJECTED HINT TEXT AND VISUAL DOTS SECTION -->
+<div class="swipe-hint-label" style="margin-top: -35px !important; margin-bottom: 5px !important; position: relative; z-index: 10; color: #ff007f !important;">🩷 SWIPE TO VIEW 🩷</div>
+
+
+
+
+    
+    <div class="indicator-dots-shelf">
+        <div class="indicator-dot active"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+    </div>    <!-- LUXURY 6-CLIENT REVIEWS DISPLAY SHOWCASE -->
+    <div style="max-width: 450px; margin: 40px auto 60px auto; padding: 0 20px; box-sizing: border-box;">
+        <div style="background-color: rgba(20, 17, 31, 0.85); border: 1px solid #ff007f; border-radius: 16px; padding: 25px; text-align: left; box-shadow: 0 8px 25px rgba(0,0,0,0.7); backdrop-filter: blur(5px);">
+            <h3 style="margin: 0 0 20px 0; font-size: 1.1rem; color: #ff007f; letter-spacing: 2px; text-transform: uppercase; text-align: center; font-weight: bold;">Client Reviews</h3>
+            
+            <!-- Review 1: Full Lamination, Tint & Shape + Bar -->
+            <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255, 0, 127, 0.2); padding-bottom: 15px;">
+                <div style="color: #ff007f; font-size: 0.9rem; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                <p style="margin: 0 0 5px 0; font-size: 0.9rem; color: #f4f3f7; font-style: italic; line-height: 1.4;">"The absolute queen of brow lamination! I booked the full lamination, tint, and wax combo, and my brows have never looked this full or perfectly shaped. Sipping on a complimentary drink while Kira worked her magic made it feel like a true luxury spa day. 10/10 experience!"</p>
+                <span style="font-size: 0.8rem; color: #8a8894; font-weight: bold; text-transform: uppercase;">— Madison K.</span>
+            </div>
+
+            <!-- Review 2: Henna & Wax + Bar -->
+            <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255, 0, 127, 0.2); padding-bottom: 15px;">
+                <div style="color: #ff007f; font-size: 0.9rem; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                <p style="margin: 0 0 5px 0; font-size: 0.9rem; color: #f4f3f7; font-style: italic; line-height: 1.4;">"I am completely obsessed with my henna brows and shaping! Kira maps your brows beautifully to fit your face perfectly. The henna stain lasts so long, and her suite vibe is immaculate. Love the bar experience she includes—it's such a high-end touch!"</p>
+                <span style="font-size: 0.8rem; color: #8a8894; font-weight: bold; text-transform: uppercase;">— Brianna L.</span>
+            </div>
+
+            <!-- Review 3: Cluster Lashes + Bar -->
+            <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255, 0, 127, 0.2); padding-bottom: 15px;">
+                <div style="color: #ff007f; font-size: 0.9rem; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                <p style="margin: 0 0 5px 0; font-size: 0.9rem; color: #f4f3f7; font-style: italic; line-height: 1.4;">"Kira is so meticulous and sweet! My cluster lashes are lightweight, full, and look incredibly seamless. The entire session was so relaxing, and getting a luxury complimentary drink at her station makes the appointment feel so elite. I won't go anywhere else!"</p>
+                <span style="font-size: 0.8rem; color: #8a8894; font-weight: bold; text-transform: uppercase;">— Chloe J.</span>
+            </div>
+
+            <!-- Review 4: Tint, Wax & Shape -->
+            <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255, 0, 127, 0.2); padding-bottom: 15px;">
+                <div style="color: #ff007f; font-size: 0.9rem; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                <p style="margin: 0 0 5px 0; font-size: 0.9rem; color: #f4f3f7; font-style: italic; line-height: 1.4;">"Fast, professional, and flawless. I get the brow tint, wax, and shape combo to keep my brows fresh, and Kira hits it out of the park every single time. The retention on her tints is amazing. Sitting at her bar section makes you feel like an absolute VIP!"</p>
+                <span style="font-size: 0.8rem; color: #8a8894; font-weight: bold; text-transform: uppercase;">— Alexis T.</span>
+            </div>
+
+            <!-- Review 5: Defined Brows Special -->
+            <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255, 0, 127, 0.2); padding-bottom: 15px;">
+                <div style="color: #ff007f; font-size: 0.9rem; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                <p style="margin: 0 0 5px 0; font-size: 0.9rem; color: #f4f3f7; font-style: italic; line-height: 1.4;">"I booked her promotional special for defined brows with the henna option, and wow! The definition is stunning and the wax line is so clean. It's an incredible treat, especially with the complimentary drink included. Kira's attention to detail is unmatched."</p>
+                <span style="font-size: 0.8rem; color: #8a8894; font-weight: bold; text-transform: uppercase;">— Destiny R.</span>
+            </div>
+
+            <!-- Review 6: Lamination & Shape -->
+            <div style="padding-bottom: 5px;">
+                <div style="color: #ff007f; font-size: 0.9rem; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                <p style="margin: 0 0 5px 0; font-size: 0.9rem; color: #f4f3f7; font-style: italic; line-height: 1.4;">"Kira completely transformed my brows with just a lamination and shape! They stay fluffy and perfectly groomed with zero effort. The luxury workspace layout is beautiful, the station music vibes are great, and the hospitality is top-tier. Best boutique salon in town!"</p>
+                <span style="font-size: 0.8rem; color: #8a8894; font-weight: bold; text-transform: uppercase;">— Maya V.</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Background Audio Element -->
+    <audio id="salon-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Interactive Touch Control and Autoplay Scripts -->
+    <script>
+        // --- 1. Music Autoplay Script ---
+        function playSalonMusic() {
+            var track = document.getElementById("salon-music");
+            track.play().catch(function(e) {
+                console.log("Autoplay paused by browser security policy.");
+            });
+            document.removeEventListener('click', playSalonMusic);
+            document.removeEventListener('touchstart', playSalonMusic);
+            document.removeEventListener('scroll', playSalonMusic);
+        }
+        document.addEventListener('click', playSalonMusic);
+        document.addEventListener('touchstart', playSalonMusic);
+        document.addEventListener('scroll', playSalonMusic);
+
+
+        // --- 2. Native Scroll Snapping Autoplay Controller ---
+        const slider = document.getElementById('lounge-slider');
+        const slideItems = document.querySelectorAll('.slide-item');
+        let currentSlide = 0;
+        let autoplayTimer;
+        let resetTimeout;
+
+        function startAutoplay() {
+            autoplayTimer = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slideItems.length;
+                const slideWidth = slider.clientWidth;
+                
+                slider.scrollTo({
+                    left: currentSlide * slideWidth,
+                    behavior: 'smooth'
+                });
+            }, 60000); // ⏱️ Moves exactly every 1 minute (60,000ms)
+        }
+
+        function resetAutoplayTimer() {
+            clearInterval(autoplayTimer);
+            startAutoplay();
+        }
+
+        // Track touch manual inputs cleanly so it matches the automatic index
+        slider.addEventListener('scroll', () => {
+            const slideWidth = slider.clientWidth;
+            if (slideWidth > 0) {
+                currentSlide = Math.round(slider.scrollLeft / slideWidth);
+            }
+        });
+
+        // Pauses timer temporarily while dragging with finger, then resets the 1-minute countdown
+        slider.addEventListener('touchstart', () => {
+            clearInterval(autoplayTimer);
+            clearTimeout(resetTimeout);
+        });
+
+        slider.addEventListener('touchend', () => {
+            resetTimeout = setTimeout(resetAutoplayTimer, 5000); // Waits 5 seconds after finger lifts to resume countdown
+        });
+
+        // Launch slideshow clock loop on load
+        startAutoplay();
+    </script>
+</body>
+</html>
