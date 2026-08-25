@@ -271,37 +271,33 @@
 
     <!-- Interactive 3D Controller & Audio Script -->
     <script>
-        const stage = document.getElementById('carouselStage');
-        const hub = document.getElementById('carouselHub');
-        const cards = Array.from(document.querySelectorAll('.carousel-card'));
-        
-        let currentIndex = 0;
-        let startX = 0;
-        let isDragging = false;
-        let autoplayTimer = null;
-        
-        const radius = 220; 
-        const theta = 360 / cards.length;
+        window.addEventListener('DOMContentLoaded', () => {
+            const stage = document.getElementById('carouselStage');
+            const hub = document.getElementById('carouselHub');
+            const cards = Array.from(document.querySelectorAll('.carousel-card'));
+            
+            let currentIndex = 0;
+            let startX = 0;
+            let isDragging = false;
+            let autoplayTimer = null;
+            
+            const radius = 220; 
+            const theta = 360 / cards.length;
 
-        function updateCarouselHub() {
-            cards.forEach((card, index) => {
-                const cardAngle = (index * theta);
-                card.style.transform = `rotateY(${cardAngle}deg) translateZ(${radius}px)`;
-                
-                const adjustedIndex = ((currentIndex % cards.length) + cards.length) % cards.length;
-                if (index === adjustedIndex) {
-                    card.style.opacity = "1";
-                    card.style.filter = "none";
-                } else {
-                    card.style.opacity = "0.45";
-                    card.style.filter = "blur(1px)";
-                }
-            });
+            function updateCarouselHub() {
+                cards.forEach((card, index) => {
+                    const cardAngle = (index * theta);
+                    card.style.transform = `rotateY(${cardAngle}deg) translateZ(${radius}px)`;
+                    
+                    const adjustedIndex = ((currentIndex % cards.length) + cards.length) % cards.length;
+                    if (index === adjustedIndex) {
+                        card.style.opacity = "1";
+                        card.style.filter = "none";
+                        card.style.zIndex = "10";
+                    } else {
+                        card.style.opacity = "0.45";
+                        card.style.filter = "blur(1px)";
+                        card.style.zIndex = "1";
+                    }
+                });
 
-            const hubAngle = currentIndex * -theta;
-            hub.style.transform = `translateZ(-${radius}px) rotateY(${hubAngle}deg)`;
-        }
-
-        function startAutoplay() {
-            stopAutoplay(); 
-            autoplayTimer = setInterval(() => {
