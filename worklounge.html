@@ -10,6 +10,7 @@
             padding: 0;
             min-height: 100vh;
             background-color: #0c0914; 
+            overflow-x: hidden;
         }
         
         body { 
@@ -82,28 +83,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 0;
+            padding: 60px 0;
             width: 100%;
-            perspective: 1000px; /* Gives the page 3D depth */
+            perspective: 1200px; /* Gives the carousel deep 3D depth */
             overflow: visible;
         }
 
-        /* The Moving 3D Ring holding all photos */
+        /* The Moving 3D Carousel Ring */
         .photo-slider {
             position: relative;
-            width: 280px;
-            height: 380px;
+            width: 240px;
+            height: 340px;
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-            cursor: grab;
             display: flex;
             justify-content: center;
             align-items: center;
-            touch-action: none; /* Disables page scrolling while spinning the 3D ring */
-        }
-
-        .photo-slider:active {
-            cursor: grabbing;
+            /* Runs a non-stop, endless 3D carousel spin animation */
+            animation: infiniteCarouselSpin 24s linear infinite;
         }
 
         /* 3D Photo Placement with Rounded Corners */
@@ -120,25 +116,33 @@
             justify-content: center;
             align-items: center;
             backface-visibility: visible;
-            user-select: none;
-            /* Places the 3 photos evenly in a 3D circle ring */
-            transform: rotateY(var(--rotate-y)) translateZ(240px);
+            /* Places the 3 photos perfectly spaced out in an empty 3D circle */
+            transform: rotateY(var(--rotate-y)) translateZ(210px);
         }
 
-        /* Displays the FULL image inside its 3D card */
+        /* Displays the FULL uncropped image inside its 3D card */
         .photo-card img {
             width: 100%;
             height: auto;
             max-height: 100%;
             display: block;
             object-fit: contain;
-            pointer-events: none;
+        }
+
+        /* Pure CSS Seamless 360-Degree Continuous Loop */
+        @keyframes infiniteCarouselSpin {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
             margin-top: auto;
-            padding-bottom: 65px; /* Lifted both selection cards up higher away from the absolute screen base */
+            padding-bottom: 65px; 
             width: 100%;
         }
 
@@ -212,16 +216,19 @@
 
         <!-- Middle 3D Carousel Selection Workspace Area -->
         <div class="middle-selection">
-            <div class="photo-slider" id="carousel-ring">
+            <div class="photo-slider">
                 
+                <!-- PHOTO 1 PANEL -->
                 <div class="photo-card" style="--rotate-y: 0deg;">
                     <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
                 </div>
 
+                <!-- PHOTO 2 PANEL -->
                 <div class="photo-card" style="--rotate-y: 120deg;">
                     <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
                 </div>
 
+                <!-- PHOTO 3 PANEL -->
                 <div class="photo-card" style="--rotate-y: 240deg;">
                     <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
                 </div>
@@ -250,7 +257,7 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Interactive Touch Control Script -->
+    <!-- Interactive Touch Control Script for Music Only -->
     <script>
         function playSalonMusic() {
             var track = document.getElementById("salon-music");
@@ -266,40 +273,5 @@
         document.addEventListener('scroll', playSalonMusic);
     </script>
 
-    <!-- 3D Carousel Script -->
-    <script>
-        const ring = document.getElementById('carousel-ring');
-        let currentAngle = 0;
-        let isDragging = false;
-        let startX = 0;
-        let lastAngle = 0;
-        let timer;
-
-        function startAutoSlide() {
-            clearInterval(timer);
-            timer = setInterval(() => {
-                if (!isDragging) {
-                    currentAngle -= 120;
-                    if (ring) ring.style.transform = `rotateY(${currentAngle}deg)`;
-                }
-            }, 60000); 
-        }
-
-        function resetAutoSlide() {
-            clearInterval(timer);
-            startAutoSlide();
-        }
-
-        const dragStart = (e) => {
-            isDragging = true;
-            clearInterval(timer);
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            startX = clientX;
-            lastAngle = currentAngle;
-        };
-
-        const dragMove = (e) => {
-            if (!isDragging) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const diffX = clientX - startX;
-            currentAngle = lastAngle + (diffX * 0.4);
+</body>
+</html>
