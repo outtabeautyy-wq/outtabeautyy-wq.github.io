@@ -89,15 +89,15 @@
         }
 
         /* The Horizontal Finger-Swipe Slider Box */
-        /* FIX: Bumped width up to 86% to make pictures wider while keeping scroll lanes */
+        /* FIX: Bumped width to 96% and max-width to 500px so it scales up perfectly on tablets and iPhones */
         .photo-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 0px;
-            width: 86%; 
-            max-width: 440px; 
-            height: 380px;
+            width: 96%; 
+            max-width: 500px; 
+            height: 420px; /* Made the height taller to fit the wider images beautifully */
             margin: 0 auto;
             scrollbar-width: none; 
             -webkit-overflow-scrolling: touch; 
@@ -301,8 +301,3 @@
 
         if (slider) {
             slider.addEventListener('touchstart', () => clearInterval(photoTimer));
-            slider.addEventListener('touchend', startPhotoTimer);
-            startPhotoTimer();
-        }
-    </script>
-
