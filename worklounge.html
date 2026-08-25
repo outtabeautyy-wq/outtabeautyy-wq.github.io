@@ -89,18 +89,20 @@
         }
 
         /* The Horizontal Finger-Swipe Slider Box */
+        /* FIX: Width dropped to 80% to leave 10% margins on the left and right sides so fingers don't get trapped */
         .photo-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 0px;
-            width: 90%; 
-            max-width: 460px; 
+            width: 80%; 
+            max-width: 400px; 
             height: 380px;
             margin: 0 auto;
             scrollbar-width: none; 
             -webkit-overflow-scrolling: touch; 
-            touch-action: pan-x; 
+            /* Allows diagonal scroll gestures so you don't stick when dragging slightly vertically */
+            touch-action: pan-x pan-y; 
         }
         
         /* Hides scrollbar on Safari (iPhone) and Chrome */
@@ -125,7 +127,7 @@
             box-sizing: border-box;
         }
 
-        /* Displays the FULL uncropped image cleanly inside the shrunk frame */
+        /* Displays the FULL uncropped image cleanly inside the frame */
         .photo-card img {
             width: 100%;
             height: auto;
@@ -136,7 +138,7 @@
             -webkit-user-drag: none;
         }
 
-        /* Hot Pink Swipe Message Style - Restored Light Up Settings */
+        /* Hot Pink Swipe Message Style */
         .swipe-message {
             color: #ff007f !important;
             font-weight: bold;
@@ -150,7 +152,7 @@
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
-            margin-top: auto;
+            margin-top: 20px;
             padding-bottom: 65px; 
             width: 100%;
         }
@@ -241,8 +243,8 @@
 
             </div>
 
-            <!-- Hot Pink Target Swipe Notice Text Element Sits Exactly Under the Slideshow -->
-            <div class="swipe-message">🩷SWIPE TO LOOK🩷</div>
+            <!-- Hot Pink Swipe Notice Text Element -->
+            <div class="swipe-message">❤️swipe to look❤️</div>
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -268,7 +270,7 @@
 
     <!-- Music Player + 1 Minute Automatic Slideshow Logic System -->
     <script>
-        // 1. Continuous Background Music Player
+        // Continuous Background Music Player
         const playMusic = () => {
             const track = document.getElementById("salon-music");
             if (track) {
@@ -278,7 +280,7 @@
         };
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
 
-        // 2. Photo-Only Slideshow Timer (Changes PICTURES every 1 minute)
+        // Automatic Slideshow Engine (Advances smoothly every 1 minute / 60000ms)
         const slider = document.getElementById('lounge-slider');
         let photoTimer;
 
@@ -300,8 +302,3 @@
 
         if (slider) {
             slider.addEventListener('touchstart', () => clearInterval(photoTimer));
-            slider.addEventListener('touchend', startPhotoTimer);
-            startPhotoTimer();
-        }
-    </script>
-
