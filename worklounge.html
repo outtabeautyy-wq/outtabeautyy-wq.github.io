@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Outta Beauty | Kira’s Work Lounge</title>
     <style>
         html, body {
@@ -89,7 +89,7 @@
             overflow: visible;
         }
 
-        /* The Moving 3D Carousel Ring */
+        /* The Moving 3D Carousel Ring controlled by finger */
         .photo-slider {
             position: relative;
             width: 240px;
@@ -98,8 +98,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Runs a non-stop, endless 3D carousel spin animation */
-            animation: infiniteCarouselSpin 24s linear infinite;
+            cursor: grab;
+            /* STOPS the mobile screen from scrolling/sliding out of place */
+            touch-action: none; 
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .photo-slider:active {
+            cursor: grabbing;
         }
 
         /* 3D Photo Placement with Rounded Corners */
@@ -116,7 +123,8 @@
             justify-content: center;
             align-items: center;
             backface-visibility: visible;
-            /* Places the 3 photos perfectly spaced out in an empty 3D circle */
+            pointer-events: none; /* Passes touch straight to the main carousel container */
+            /* Places the 3 photos perfectly spaced out in a 3D circle */
             transform: rotateY(var(--rotate-y)) translateZ(210px);
         }
 
@@ -127,16 +135,7 @@
             max-height: 100%;
             display: block;
             object-fit: contain;
-        }
-
-        /* Pure CSS Seamless 360-Degree Continuous Loop */
-        @keyframes infiniteCarouselSpin {
-            from {
-                transform: rotateY(0deg);
-            }
-            to {
-                transform: rotateY(360deg);
-            }
+            -webkit-user-drag: none;
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
@@ -216,7 +215,7 @@
 
         <!-- Middle 3D Carousel Selection Workspace Area -->
         <div class="middle-selection">
-            <div class="photo-slider">
+            <div class="photo-slider" id="carousel-ring">
                 
                 <!-- PHOTO 1 PANEL -->
                 <div class="photo-card" style="--rotate-y: 0deg;">
@@ -257,7 +256,7 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Interactive Touch Control Script for Music Only -->
+    <!-- Interactive Touch Control Script for Music -->
     <script>
         function playSalonMusic() {
             var track = document.getElementById("salon-music");
@@ -273,5 +272,29 @@
         document.addEventListener('scroll', playSalonMusic);
     </script>
 
-</body>
-</html>
+    <!-- Direct Finger Control 3D Carousel Script -->
+    <script>
+        const ring = document.getElementById('carousel-ring');
+        let currentAngle = 0;
+        let isDragging = false;
+        let startX = 0;
+        let lastAngle = 0;
+
+        const dragStart = (e) => {
+            isDragging = true;
+            // Reads the exact coordinate whether it's a mobile finger touch or a desktop mouse click
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            startX = clientX;
+            lastAngle = currentAngle;
+            
+            // Adds smooth transitional timing back to zero while dragging
+            if (ring) ring.style.transition = 'none';
+        };
+
+        const dragMove = (e) => {
+            if (!isDragging) return;
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const diffX = clientX - startX;
+            
+            // Adjust the 0.5 value to make the finger dragging more or less sensitive
