@@ -261,60 +261,70 @@
         document.addEventListener('touchstart', playSalonMusic);
         document.addEventListener('scroll', playSalonMusic);
     </script>
+    
     <script>
-        // Automatic slideshow changing every 1 minute (60000ms)
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('.photo-card');
-        
-        function showSlides() {
-            slides.forEach(slide => slide.classList.remove('active'));
-            slideIndex++;
-            if (slideIndex > slides.length) { slideIndex = 1 }
-            slides[slideIndex-1].classList.add('active');
-            setTimeout(showSlides, 60000); 
+        const ring = document.getElementById('carousel-ring');
+        let currentAngle = 0;
+        let isDragging = false;
+        let startX = 0;
+        let lastAngle = 0;
+        let timer;
+
+        // Auto-rotation system: steps 120 degrees every 1 minute
+        function startAutoSlide() {
+            timer = setInterval(() => {
+                currentAngle -= 120;
+                ring.style.transform = `rotateY(${currentAngle}deg)`;
+            }, 60000); 
         }
-        if(slides.length > 0) { showSlides(); }
 
-        // Manual 360 Degree Drag & Touch Swipe Rotation
-        slides.forEach(card => {
-            let isDragging = false;
-            let startX = 0;
-            let currentRotation = 0;
+        function resetAutoSlide() {
+            clearInterval(timer);
+            startAutoSlide();
+        }
 
-            const startRotate = (e) => {
-                isDragging = true;
-                // Detects either desktop click or mobile screen tap
-                startX = e.pageX || (e.touches && e.touches[0].pageX);
-            };
+        // 3D Circle Drag & Swipe Controls
+        const dragStart = (e) => {
+            isDragging = true;
+            clearInterval(timer);
+            const touch = e.touches ? e.touches[0] : e;
+            startX = touch.pageX;
+            lastAngle = currentAngle;
+        };
 
-            const doRotate = (e) => {
-                if (!isDragging) return;
-                // Detects desktop drag or mobile finger swipe
-                const x = e.pageX || (e.touches && e.touches[0].pageX);
-                const diff = x - startX;
-                let rotation = currentRotation + (diff * 0.5); 
-                card.style.transform = `rotate(${rotation}deg)`;
-            };
+        const dragMove = (e) => {
+            if (!isDragging) return;
+            const touch = e.touches ? e.touches[0] : e;
+            const diffX = touch.pageX - startX;
+            // Converts horizontal finger drag into smooth circle spinning
+            currentAngle = lastAngle + (diffX * 0.4);
+            ring.style.transform = `rotateY(${currentAngle}deg)`;
+        };
 
-            const stopRotate = () => {
-                if (!isDragging) return;
-                isDragging = false;
-                const transformStr = card.style.transform;
-                const match = transformStr.match(/rotate\(([^)]+)deg\)/);
-                if (match) currentRotation = parseFloat(match[1]);
-            };
+        const dragEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            // Snap calculation to pull the closest photo straight to the front
+            currentAngle = Math.round(currentAngle / 120) * 120;
+            ring.style.transform = `rotateY(${currentAngle}deg)`;
+            resetAutoSlide();
+        };
 
-            // Desktop Mouse Events
-            card.addEventListener('mousedown', startRotate);
-            window.addEventListener('mousemove', doRotate);
-            window.addEventListener('mouseup', stopRotate);
+        // Desktop Mouse Links
+        ring.addEventListener('mousedown', dragStart);
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('mouseup', dragEnd);
 
-            // Phone and Tablet Touch Events
-            card.addEventListener('touchstart', startRotate, { passive: true });
-            window.addEventListener('touchmove', doRotate, { passive: true });
-            window.addEventListener('touchend', stopRotate);
-        });
+        // Mobile Phone and Tablet Touch Links
+        ring.addEventListener('touchstart', dragStart, { passive: true });
+        window.addEventListener('touchmove', dragMove, { passive: true });
+        window.addEventListener('touchend', dragEnd);
+
+        // Turn on the automatic system
+        if (ring) { startAutoSlide(); }
     </script>
+
 
 </body>
 </html>
