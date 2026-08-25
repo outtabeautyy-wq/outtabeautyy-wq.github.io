@@ -306,67 +306,6 @@
         }
     </script>
 
-<!-- 1. Background Music Elements -->
-<audio id="bg-music" loop>
-    <source src="your-audio-file.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-
-<!-- 2. Video Element (Using GitHub's Raw Media Link) -->
-<div class="video-container" style="max-width: 800px; margin: 20px auto; padding: 0 15px;">
-    <video id="worklounge-video" controls width="100%" style="border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-        <!-- We use the absolute raw URL to prevent the black screen error -->
-        <source src="media/worklounge_promo.mp4" type="video/mp4" id="video-src">
-        Your browser does not support the video tag.
-    </video>
-</div>
-
-<!-- 3. Control Script -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const bgMusic = document.getElementById('bg-music');
-        const video = document.getElementById('worklounge-video');
-        const videoSrc = document.getElementById('video-src');
-
-        // Dynamically converts the relative path to an absolute raw URL to fix Git LFS/Pages black screen bugs
-        if (videoSrc) {
-            const currentURL = window.location.href;
-            if (currentURL.includes('github.io')) {
-                // Extracts the base user/repo path to build the perfect raw link
-                const cleanBase = currentURL.replace('//', '').split('/')[0];
-                const repoName = window.location.pathname.split('/')[1];
-                videoSrc.src = `https://githubusercontent.com{cleanBase.replace('.github.io', '')}/${repoName}/main/media/worklounge_promo.mp4`;
-                video.load();
-            }
-        }
-
-        if (bgMusic && video) {
-            // Start background music on first user click 
-            document.addEventListener('click', () => {
-                if (bgMusic.paused && video.paused) {
-                    bgMusic.play().catch(error => console.log("Audio play blocked until interaction."));
-                }
-            }, { once: true });
-
-            // Pause music when video starts playing
-            video.addEventListener('play', () => {
-                bgMusic.pause();
-            });
-
-            // Resume music when video is paused
-            video.addEventListener('pause', () => {
-                if (!video.ended) {
-                    bgMusic.play().catch(err => console.log("Audio playback user interaction restriction."));
-                }
-            });
-
-            // Resume music when video finishes completely
-            video.addEventListener('ended', () => {
-                bgMusic.play().catch(err => console.log("Audio playback user interaction restriction."));
-            });
-        }
-    });
-</script>
 
 
 </body>
