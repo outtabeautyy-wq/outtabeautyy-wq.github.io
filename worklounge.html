@@ -136,15 +136,16 @@
             -webkit-user-drag: none;
         }
 
-        /* Hot Pink Swipe Message Style */
+        /* Hot Pink Swipe Message Style - Restored Light Up Settings */
         .swipe-message {
-            color: #ff007f;
+            color: #ff007f !important;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-size: 0.9rem;
             margin-top: 15px;
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+            text-shadow: 0 0 12px #ff007f, 0 0 5px rgba(255, 0, 127, 0.5);
+            display: block;
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
@@ -241,7 +242,7 @@
             </div>
 
             <!-- Hot Pink Target Swipe Notice Text Element Sits Exactly Under the Slideshow -->
-            <div class="swipe-message">❤️swipe to look❤️</div>
+            <div class="swipe-message">Used text element for swipe action indicator.❤️swipe to look❤️</div>
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -267,7 +268,7 @@
 
     <!-- Music Player + 1 Minute Automatic Slideshow Logic System -->
     <script>
-        // Background Music Activator
+        // 1. Continuous Background Music Player
         const playMusic = () => {
             const track = document.getElementById("salon-music");
             if (track) {
@@ -277,28 +278,30 @@
         };
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
 
-        // Automatic Slideshow Engine (Advances smoothly every 1 minute / 60000ms)
+        // 2. Photo-Only Slideshow Timer (Changes PICTURES every 1 minute)
         const slider = document.getElementById('lounge-slider');
-        let autoTimer;
+        let photoTimer;
 
-        function startAutoSlider() {
-            clearInterval(autoTimer);
-            autoTimer = setInterval(() => {
+        function startPhotoTimer() {
+            clearInterval(photoTimer);
+            photoTimer = setInterval(() => {
                 if (slider) {
                     const cardWidth = slider.clientWidth;
                     const maxScroll = slider.scrollWidth - cardWidth;
                     
                     if (slider.scrollLeft >= maxScroll - 5) {
-                        slider.scrollTo({ left: 0, behavior: 'smooth' });
+                        slider.scrollTo({ left: 0, behavior: 'smooth' }); 
                     } else {
-                        slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                        slider.scrollBy({ left: cardWidth, behavior: 'smooth' }); 
                     }
                 }
             }, 60000); 
         }
 
-        // Resets the 1-minute timer if a client slides a photo manually with their finger
         if (slider) {
-            slider.addEventListener('touchstart', () => clearInterval(autoTimer));
-            slider.addEventListener('touchend', startAutoSlider);
-            slider.addEventListener('mousedown', () => clearInterval(autoTimer));
+            slider.addEventListener('touchstart', () => clearInterval(photoTimer));
+            slider.addEventListener('touchend', startPhotoTimer);
+            startPhotoTimer();
+        }
+    </script>
+
