@@ -270,7 +270,9 @@
         // Background Music Activator
         const playMusic = () => {
             const track = document.getElementById("salon-music");
-            if (track) track.play().catch(e => console.log("Autoplay blocked"));
+            if (track) {
+                track.play().catch(e => console.log("Autoplay blocked"));
+            }
             ["click", "touchstart", "scroll"].forEach(evt => document.removeEventListener(evt, playMusic));
         };
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
