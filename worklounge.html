@@ -89,13 +89,14 @@
         }
 
         /* The Horizontal Finger-Swipe Slider Box */
+        /* FIX: Bumped width up to 86% to make pictures wider while keeping scroll lanes */
         .photo-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 0px;
-            width: 80%; 
-            max-width: 400px; 
+            width: 86%; 
+            max-width: 440px; 
             height: 380px;
             margin: 0 auto;
             scrollbar-width: none; 
@@ -108,7 +109,7 @@
             display: none;
         }
 
-        /* Clean Smaller Photo Cards with Rounded Corners */
+        /* Clean Photo Cards with Rounded Corners */
         .photo-card {
             flex: 0 0 100%;
             width: 100%;
@@ -241,8 +242,8 @@
 
             </div>
 
-            <!-- Hot Pink Target Swipe Notice Text Element -->
-            <div class="swipe-message">🩷swipe to look🩷</div>
+            <!-- Hot Pink Target Swipe Notice Text Element Sits Exactly Under the Slideshow -->
+            <div class="swipe-message">❤️swipe to look❤️</div>
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -305,5 +306,3 @@
         }
     </script>
 
-</body>
-</html>
