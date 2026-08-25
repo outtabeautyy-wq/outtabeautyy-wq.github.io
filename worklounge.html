@@ -81,6 +81,7 @@
         .middle-selection {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px 0;
@@ -93,12 +94,13 @@
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 0px;
-            /* Shrunk down perfectly to a neat mobile photo container size */
-            width: 290px; 
-            height: 360px;
-            scrollbar-width: none; /* Hides scrollbar on Firefox */
-            -webkit-overflow-scrolling: touch; /* Smooth mobile phone kinetic swiping */
-            touch-action: pan-x; /* Allows horizontal swiping but stops vertical screen bounce */
+            width: 90%; 
+            max-width: 460px; 
+            height: 380px;
+            margin: 0 auto;
+            scrollbar-width: none; 
+            -webkit-overflow-scrolling: touch; 
+            touch-action: pan-x; 
         }
         
         /* Hides scrollbar on Safari (iPhone) and Chrome */
@@ -132,6 +134,17 @@
             object-fit: contain;
             pointer-events: none;
             -webkit-user-drag: none;
+        }
+
+        /* Hot Pink Swipe Message Style */
+        .swipe-message {
+            color: #ff007f;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
@@ -226,6 +239,9 @@
                 </div>
 
             </div>
+
+            <!-- Hot Pink Target Swipe Notice Text Element Sits Exactly Under the Slideshow -->
+            <div class="swipe-message">❤️swipe to look❤️</div>
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -270,7 +286,6 @@
                     const cardWidth = slider.clientWidth;
                     const maxScroll = slider.scrollWidth - cardWidth;
                     
-                    // If we reach the end of the photos, loop back smoothly to the first photo
                     if (slider.scrollLeft >= maxScroll - 5) {
                         slider.scrollTo({ left: 0, behavior: 'smooth' });
                     } else {
@@ -285,12 +300,3 @@
             slider.addEventListener('touchstart', () => clearInterval(autoTimer));
             slider.addEventListener('touchend', startAutoSlider);
             slider.addEventListener('mousedown', () => clearInterval(autoTimer));
-            slider.addEventListener('mouseup', startAutoSlider);
-            
-            // Kick off the auto cycle on page launch
-            startAutoSlider();
-        }
-    </script>
-
-</body>
-</html>
