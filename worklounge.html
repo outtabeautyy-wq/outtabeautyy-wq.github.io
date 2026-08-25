@@ -10,7 +10,6 @@
             padding: 0;
             min-height: 100vh;
             background-color: #0c0914; 
-            overflow-x: hidden;
         }
         
         body { 
@@ -77,72 +76,37 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* 3D Room Container */
+        /* Clean Vertical Photo Display Setup - Zero Circles/Zero Spins */
         .middle-selection {
-            flex: 1;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 0;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px 0;
             width: 100%;
-            perspective: 1200px; /* Gives the page 3D depth */
-            overflow: visible;
         }
 
-        /* The Moving 3D Ring holding all photos */
-        .photo-slider {
-            position: relative;
-            width: 250px;
-            height: 350px;
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            cursor: grab;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            touch-action: none; /* Stops mobile browsers from dragging the page screen around */
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .photo-slider:active {
-            cursor: grabbing;
-        }
-
-        /* 3D Photo Placement with Rounded Corners */
+        /* Photo Containers with Rounded Corners */
         .photo-card {
-            position: absolute;
             width: 100%;
-            height: 100%;
             background: rgba(20, 17, 31, 0.85);
             border: 1px solid rgba(255, 0, 127, 0.4);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backface-visibility: visible;
-            user-select: none;
-            -webkit-user-drag: none;
-            /* Perfectly spaces out the 3 photos into a carousel triangle ring */
-            transform: rotateY(var(--rotate-y)) translateZ(220px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            box-sizing: border-box;
         }
 
-        /* Displays the FULL image inside its 3D card without cropping */
+        /* Displays the FULL image inside without cropping or cutting off */
         .photo-card img {
             width: 100%;
             height: auto;
-            max-height: 100%;
             display: block;
             object-fit: contain;
-            pointer-events: none;
-            -webkit-user-drag: none;
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
-            margin-top: auto;
+            margin-top: 20px;
             padding-bottom: 65px; 
             width: 100%;
         }
@@ -201,7 +165,7 @@
 </head>
 <body>
 
-    <!-- Navigation Menu Frame Link Set (Work Lounge Is Middle Tab Selection) -->
+    <!-- Navigation Menu Frame Link Set -->
     <div class="nav-tabs">
         <a href="index.html" class="nav-tab">Home Lounge</a>
         <a href="worklounge.html" class="nav-tab active">Work Lounge</a>
@@ -215,23 +179,21 @@
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
-        <!-- Middle 3D Carousel Selection Workspace Area -->
+        <!-- Middle Vertical Photos Layout Area -->
         <div class="middle-selection">
-            <div class="photo-slider" id="carousel-ring">
-                
-                <div class="photo-card" style="--rotate-y: 0deg;">
-                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
-                </div>
-
-                <div class="photo-card" style="--rotate-y: 120deg;">
-                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
-                </div>
-
-                <div class="photo-card" style="--rotate-y: 240deg;">
-                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
-                </div>
-
+            
+            <div class="photo-card">
+                <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
             </div>
+
+            <div class="photo-card">
+                <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
+            </div>
+
+            <div class="photo-card">
+                <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
+            </div>
+
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -265,37 +227,5 @@
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
     </script>
 
-    <!-- Direct Finger Control 3D Carousel Script -->
-    <script>
-        const ring = document.getElementById('carousel-ring');
-        let currentAngle = 0;
-        let isDragging = false;
-        let startX = 0;
-        let lastAngle = 0;
-
-        const dragStart = (e) => {
-            isDragging = true;
-            // Reads your touch finger instantly on mobile screens or computer mouse clicks
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            startX = clientX;
-            lastAngle = currentAngle;
-            if (ring) ring.style.transition = 'none';
-        };
-
-        const dragMove = (e) => {
-            if (!isDragging) return;
-            
-            // Forces phone browsers to scroll the 3D photos instead of moving the entire page screen
-            if (e.cancelable) e.preventDefault(); 
-            
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const diffX = clientX - startX;
-            
-            // This links your finger directly to the 3D rotation tracking
-            currentAngle = lastAngle + (diffX * 0.5);
-            if (ring) ring.style.transform = `rotateY(${currentAngle}deg)`;
-        };
-
-        const dragEnd = () => {
-            if (!isDragging) return;
-            isDragging = false;
+</body>
+</html>
