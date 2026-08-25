@@ -85,22 +85,22 @@
             align-items: center;
             padding: 60px 0;
             width: 100%;
-            perspective: 1200px; /* Gives the carousel deep 3D depth */
+            perspective: 1200px; /* Gives the page 3D depth */
             overflow: visible;
         }
 
-        /* The Moving 3D Carousel Ring controlled by finger */
+        /* The Moving 3D Ring holding all photos */
         .photo-slider {
             position: relative;
-            width: 240px;
-            height: 340px;
+            width: 250px;
+            height: 350px;
             transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: grab;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: grab;
-            /* STOPS the mobile screen from scrolling/sliding out of place */
-            touch-action: none; 
+            touch-action: none; /* Stops mobile browsers from dragging the page screen around */
             user-select: none;
             -webkit-user-select: none;
         }
@@ -123,18 +123,20 @@
             justify-content: center;
             align-items: center;
             backface-visibility: visible;
-            pointer-events: none; /* Passes touch straight to the main carousel container */
-            /* Places the 3 photos perfectly spaced out in a 3D circle */
-            transform: rotateY(var(--rotate-y)) translateZ(210px);
+            user-select: none;
+            -webkit-user-drag: none;
+            /* Perfectly spaces out the 3 photos into a carousel triangle ring */
+            transform: rotateY(var(--rotate-y)) translateZ(220px);
         }
 
-        /* Displays the FULL uncropped image inside its 3D card */
+        /* Displays the FULL image inside its 3D card without cropping */
         .photo-card img {
             width: 100%;
             height: auto;
             max-height: 100%;
             display: block;
             object-fit: contain;
+            pointer-events: none;
             -webkit-user-drag: none;
         }
 
@@ -217,17 +219,14 @@
         <div class="middle-selection">
             <div class="photo-slider" id="carousel-ring">
                 
-                <!-- PHOTO 1 PANEL -->
                 <div class="photo-card" style="--rotate-y: 0deg;">
                     <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
                 </div>
 
-                <!-- PHOTO 2 PANEL -->
                 <div class="photo-card" style="--rotate-y: 120deg;">
                     <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
                 </div>
 
-                <!-- PHOTO 3 PANEL -->
                 <div class="photo-card" style="--rotate-y: 240deg;">
                     <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
                 </div>
@@ -256,20 +255,14 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Interactive Touch Control Script for Music -->
+    <!-- Shortened Music Touch Trigger System -->
     <script>
-        function playSalonMusic() {
-            var track = document.getElementById("salon-music");
-            track.play().catch(function(e) {
-                console.log("Autoplay paused by browser security policy.");
-            });
-            document.removeEventListener('click', playSalonMusic);
-            document.removeEventListener('touchstart', playSalonMusic);
-            document.removeEventListener('scroll', playSalonMusic);
-        }
-        document.addEventListener('click', playSalonMusic);
-        document.addEventListener('touchstart', playSalonMusic);
-        document.addEventListener('scroll', playSalonMusic);
+        const playMusic = () => {
+            const track = document.getElementById("salon-music");
+            if (track) track.play().catch(e => console.log("Autoplay blocked"));
+            ["click", "touchstart", "scroll"].forEach(evt => document.removeEventListener(evt, playMusic));
+        };
+        ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
     </script>
 
     <!-- Direct Finger Control 3D Carousel Script -->
@@ -282,19 +275,27 @@
 
         const dragStart = (e) => {
             isDragging = true;
-            // Reads the exact coordinate whether it's a mobile finger touch or a desktop mouse click
+            // Reads your touch finger instantly on mobile screens or computer mouse clicks
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             startX = clientX;
             lastAngle = currentAngle;
-            
-            // Adds smooth transitional timing back to zero while dragging
             if (ring) ring.style.transition = 'none';
         };
 
         const dragMove = (e) => {
             if (!isDragging) return;
             
+            // Forces phone browsers to scroll the 3D photos instead of moving the entire page screen
+            if (e.cancelable) e.preventDefault(); 
+            
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const diffX = clientX - startX;
             
-            // Adjust the 0.5 value to make the finger dragging more or less sensitive
+            // This links your finger directly to the 3D rotation tracking
+            currentAngle = lastAngle + (diffX * 0.5);
+            if (ring) ring.style.transform = `rotateY(${currentAngle}deg)`;
+        };
+
+        const dragEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
