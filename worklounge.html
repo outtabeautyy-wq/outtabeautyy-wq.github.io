@@ -89,7 +89,6 @@
         }
 
         /* The Horizontal Finger-Swipe Slider Box */
-        /* FIX: Width dropped to 80% to leave 10% margins on the left and right sides so fingers don't get trapped */
         .photo-slider {
             display: flex;
             overflow-x: auto;
@@ -101,7 +100,6 @@
             margin: 0 auto;
             scrollbar-width: none; 
             -webkit-overflow-scrolling: touch; 
-            /* Allows diagonal scroll gestures so you don't stick when dragging slightly vertically */
             touch-action: pan-x pan-y; 
         }
         
@@ -243,7 +241,7 @@
 
             </div>
 
-            <!-- Hot Pink Swipe Notice Text Element -->
+            <!-- Hot Pink Target Swipe Notice Text Element -->
             <div class="swipe-message">❤️swipe to look❤️</div>
         </div>
 
@@ -280,7 +278,7 @@
         };
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
 
-        // Automatic Slideshow Engine (Advances smoothly every 1 minute / 60000ms)
+        // Automatic Slideshow Engine (Advances smoothly every 1 minute)
         const slider = document.getElementById('lounge-slider');
         let photoTimer;
 
@@ -302,3 +300,10 @@
 
         if (slider) {
             slider.addEventListener('touchstart', () => clearInterval(photoTimer));
+            slider.addEventListener('touchend', startPhotoTimer);
+            startPhotoTimer();
+        }
+    </script>
+
+</body>
+</html>
