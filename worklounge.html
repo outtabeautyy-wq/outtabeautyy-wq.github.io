@@ -89,7 +89,7 @@
         }
 
         /* The Horizontal Finger-Swipe Slider Box */
-        /* FIX: Bumped width to 96% and max-width to 500px so it scales up perfectly on tablets and iPhones */
+        /* LOCKED AT 96% WIDTH FOR IMAGES */
         .photo-slider {
             display: flex;
             overflow-x: auto;
@@ -97,7 +97,7 @@
             gap: 0px;
             width: 96%; 
             max-width: 500px; 
-            height: 420px; /* Made the height taller to fit the wider images beautifully */
+            height: 420px; 
             margin: 0 auto;
             scrollbar-width: none; 
             -webkit-overflow-scrolling: touch; 
@@ -269,7 +269,7 @@
 
     <!-- Music Player + 1 Minute Automatic Slideshow Logic System -->
     <script>
-        // Continuous Background Music Player
+        // 1. Continuous Background Music Player Tracker Loop
         const playMusic = () => {
             const track = document.getElementById("salon-music");
             if (track) {
@@ -279,7 +279,7 @@
         };
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
 
-        // Automatic Slideshow Engine (Advances smoothly every 1 minute)
+        // 2. Photo-Only Slideshow Timer Tracker Loop (Changes PICTURES every 1 minute)
         const slider = document.getElementById('lounge-slider');
         let photoTimer;
 
@@ -301,3 +301,10 @@
 
         if (slider) {
             slider.addEventListener('touchstart', () => clearInterval(photoTimer));
+            slider.addEventListener('touchend', startPhotoTimer);
+            startPhotoTimer();
+        }
+    </script>
+
+</body>
+</html>
