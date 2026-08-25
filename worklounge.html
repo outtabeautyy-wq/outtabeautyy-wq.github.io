@@ -99,6 +99,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            touch-action: none; /* Disables page scrolling while spinning the 3D ring */
         }
 
         .photo-slider:active {
@@ -274,11 +275,13 @@
         let lastAngle = 0;
         let timer;
 
-        // Auto-rotation system: steps 120 degrees every 1 minute
         function startAutoSlide() {
+            clearInterval(timer);
             timer = setInterval(() => {
-                currentAngle -= 120;
-                ring.style.transform = `rotateY(${currentAngle}deg)`;
+                if (!isDragging) {
+                    currentAngle -= 120;
+                    if (ring) ring.style.transform = `rotateY(${currentAngle}deg)`;
+                }
             }, 60000); 
         }
 
@@ -287,24 +290,16 @@
             startAutoSlide();
         }
 
-        // 3D Circle Drag & Swipe Controls
         const dragStart = (e) => {
             isDragging = true;
             clearInterval(timer);
-            const touch = e.touches ? e.touches[0] : e;
-            startX = touch.pageX;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            startX = clientX;
             lastAngle = currentAngle;
         };
 
         const dragMove = (e) => {
             if (!isDragging) return;
-            const touch = e.touches ? e.touches[0] : e;
-            const diffX = touch.pageX - startX;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const diffX = clientX - startX;
             currentAngle = lastAngle + (diffX * 0.4);
-            ring.style.transform = `rotateY(${currentAngle}deg)`;
-        };
-
-        const dragEnd = () => {
-            if (!isDragging) return;
-            isDragging = false;
-            
