@@ -1,1 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outta Beauty | Kira’s Work Lounge</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #0c0914; 
+        }
+        
+        body { 
+            background: linear-gradient(rgba(12, 9, 20, 0.75), rgba(12, 9, 20, 0.75)), url('worklounge.jpeg') center/cover no-repeat fixed;
+            color: #f4f3f7; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            line-height: 1.5; 
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
 
+        /* Top Navigation Menu Frame */
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background: #000000;
+            border-bottom: 2px solid #ff007f;
+            padding: 12px 0;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-tab {
+            color: #8a8894;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-tab.active { color: #ff007f; }
+        .nav-tab:hover { color: #ffffff; }
+
+        /* Main Section Container Workspace */
+        .main-content {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* Shrunk top margin to move Kira's Work Lounge up higher */
+        .top-content {
+            margin-top: 15px;
+        }
+
+        /* Centered Header Layout text */
+        .worklounge-title {
+            color: #ff007f;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        }
+
+        /* Middle Selection Area: Before & After coming soon */
+        .middle-selection {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .coming-soon-tag {
+            color: #ffffff;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: italic;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            line-height: 1.6;
+        }
+
+        /* Fixed Bottom Section Content Block wrapper locked higher up */
+        .bottom-content {
+            margin-top: auto;
+            padding-bottom: 65px; /* UPDATED: Lifted both selection cards up higher away from the absolute screen base */
+            width: 100%;
+        }
+
+        /* Sleek, lower-profile Cancellation Card */
+        .policy-card {
+            background-color: rgba(20, 17, 31, 0.85);
+            border: 1px solid #ff007f;
+            border-radius: 12px;
+            padding: 12px 18px; 
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+            margin-bottom: 20px; 
+            backdrop-filter: blur(5px);
+        }
+
+        .policy-card h3 {
+            margin: 0 0 4px 0; 
+            font-size: 0.9rem; 
+            color: #ff007f;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .policy-card p {
+            margin: 0;
+            font-size: 0.8rem; 
+            color: #dcdbe3;
+            line-height: 1.4;
+        }
+
+        /* Booking Button */
+        .book-now-button {
+            display: inline-block;
+            background-color: #ff007f;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.95rem; 
+            letter-spacing: 2px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            box-shadow: 0 0 20px #ff007f;
+            transition: all 0.3s ease;
+            width: auto;
+        }
+
+        .book-now-button:hover {
+            background-color: #ffffff;
+            color: #ff007f;
+            box-shadow: 0 0 30px #ffffff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Menu Frame Link Set (Work Lounge Is Middle Tab Selection) -->
+    <div class="nav-tabs">
+        <a href="index.html" class="nav-tab">Home Lounge</a>
+        <a href="worklounge.html" class="nav-tab active">Work Lounge</a>
+        <a href="livecalendar.html" target="_blank" class="nav-tab">Live Booking</a>
+    </div> 
+
+    <!-- Main Content Layout Section Workspace Area -->
+    <main class="main-content">
+        
+        <div class="top-content">
+            <h1 class="worklounge-title">Kira’s Work Lounge</h1>
+        </div>
+
+        <!-- Middle Selection Workspace Area Layout block -->
+        <div class="middle-selection">
+            <div class="coming-soon-tag">Before and After Photos<br>Coming Soon</div>
+        </div>
+
+        <!-- Lower Section Content Block wrapper locked higher -->
+        <div class="bottom-content">
+            <!-- Cancellation Policy Block Frame layout section -->
+            <div class="policy-card">
+                <h3>Cancellation Policy</h3>
+                <p>
+                    Please note that no-shows as well as cancellations or rescheduling requests made after your appointment start time, are subject to a fee equal to 100% of the service.
+                </p>
+            </div>
+
+            <!-- Direct Action Booking Button Link Trigger Section -->
+            <a href="livecalendar.html" target="_blank" class="book-now-button">Book an Appointment Now</a>  
+
+            </div>
+
+    
+            
+
+        </div>
+
+    </main>
+
+    <!-- Background Audio Element -->
+    <audio id="salon-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Interactive Touch Control Script -->
+    <script>
+        function playSalonMusic() {
+            var track = document.getElementById("salon-music");
+            track.play().catch(function(e) {
+                console.log("Autoplay paused by browser security policy.");
+            });
+            document.removeEventListener('click', playSalonMusic);
+            document.removeEventListener('touchstart', playSalonMusic);
+            document.removeEventListener('scroll', playSalonMusic);
+        }
+        document.addEventListener('click', playSalonMusic);
+        document.addEventListener('touchstart', playSalonMusic);
+        document.addEventListener('scroll', playSalonMusic);
+    </script>
+
+</body>
+</html>
