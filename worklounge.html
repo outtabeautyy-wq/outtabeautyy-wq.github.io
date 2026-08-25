@@ -10,6 +10,7 @@
             padding: 0;
             min-height: 100vh;
             background-color: #0c0914; 
+            overflow-x: hidden;
         }
         
         body { 
@@ -76,37 +77,66 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* Clean Vertical Photo Display Setup - Zero Circles/Zero Spins */
+        /* Middle Slideshow Section Frame */
         .middle-selection {
+            flex: 1;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            justify-content: center;
+            align-items: center;
             padding: 20px 0;
             width: 100%;
         }
 
-        /* Photo Containers with Rounded Corners */
+        /* The Horizontal Finger-Swipe Slider Box */
+        .photo-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 0px;
+            /* Shrunk down perfectly to a neat mobile photo container size */
+            width: 290px; 
+            height: 360px;
+            scrollbar-width: none; /* Hides scrollbar on Firefox */
+            -webkit-overflow-scrolling: touch; /* Smooth mobile phone kinetic swiping */
+            touch-action: pan-x; /* Allows horizontal swiping but stops vertical screen bounce */
+        }
+        
+        /* Hides scrollbar on Safari (iPhone) and Chrome */
+        .photo-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Clean Smaller Photo Cards with Rounded Corners */
         .photo-card {
+            flex: 0 0 100%;
             width: 100%;
+            height: 100%;
+            scroll-snap-align: center;
             background: rgba(20, 17, 31, 0.85);
             border: 1px solid rgba(255, 0, 127, 0.4);
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             box-sizing: border-box;
         }
 
-        /* Displays the FULL image inside without cropping or cutting off */
+        /* Displays the FULL uncropped image cleanly inside the shrunk frame */
         .photo-card img {
             width: 100%;
             height: auto;
+            max-height: 100%;
             display: block;
             object-fit: contain;
+            pointer-events: none;
+            -webkit-user-drag: none;
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
-            margin-top: 20px;
+            margin-top: auto;
             padding-bottom: 65px; 
             width: 100%;
         }
@@ -179,21 +209,23 @@
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
-        <!-- Middle Vertical Photos Layout Area -->
+        <!-- Middle Swipe/Auto Slideshow Layout Area -->
         <div class="middle-selection">
-            
-            <div class="photo-card">
-                <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
-            </div>
+            <div class="photo-slider" id="lounge-slider">
+                
+                <div class="photo-card">
+                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
+                </div>
 
-            <div class="photo-card">
-                <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
-            </div>
+                <div class="photo-card">
+                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
+                </div>
 
-            <div class="photo-card">
-                <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
-            </div>
+                <div class="photo-card">
+                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
+                </div>
 
+            </div>
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -217,14 +249,47 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Shortened Music Touch Trigger System -->
+    <!-- Music Player + 1 Minute Automatic Slideshow Logic System -->
     <script>
+        // Background Music Activator
         const playMusic = () => {
             const track = document.getElementById("salon-music");
             if (track) track.play().catch(e => console.log("Autoplay blocked"));
             ["click", "touchstart", "scroll"].forEach(evt => document.removeEventListener(evt, playMusic));
         };
         ["click", "touchstart", "scroll"].forEach(evt => document.addEventListener(evt, playMusic));
+
+        // Automatic Slideshow Engine (Advances smoothly every 1 minute / 60000ms)
+        const slider = document.getElementById('lounge-slider');
+        let autoTimer;
+
+        function startAutoSlider() {
+            clearInterval(autoTimer);
+            autoTimer = setInterval(() => {
+                if (slider) {
+                    const cardWidth = slider.clientWidth;
+                    const maxScroll = slider.scrollWidth - cardWidth;
+                    
+                    // If we reach the end of the photos, loop back smoothly to the first photo
+                    if (slider.scrollLeft >= maxScroll - 5) {
+                        slider.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    }
+                }
+            }, 60000); 
+        }
+
+        // Resets the 1-minute timer if a client slides a photo manually with their finger
+        if (slider) {
+            slider.addEventListener('touchstart', () => clearInterval(autoTimer));
+            slider.addEventListener('touchend', startAutoSlider);
+            slider.addEventListener('mousedown', () => clearInterval(autoTimer));
+            slider.addEventListener('mouseup', startAutoSlider);
+            
+            // Kick off the auto cycle on page launch
+            startAutoSlider();
+        }
     </script>
 
 </body>
