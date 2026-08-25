@@ -76,30 +76,68 @@
             text-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
         }
 
-        /* Middle Selection Area: Before & After coming soon */
+        /* 3D Room Container */
         .middle-selection {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px 0;
+            padding: 40px 0;
+            width: 100%;
+            perspective: 1000px; /* Gives the page 3D depth */
+            overflow: visible;
         }
 
-        .coming-soon-tag {
-            color: #ffffff;
-            font-size: 1.3rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-style: italic;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            line-height: 1.6;
+        /* The Moving 3D Ring holding all photos */
+        .photo-slider {
+            position: relative;
+            width: 280px;
+            height: 380px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-slider:active {
+            cursor: grabbing;
+        }
+
+        /* 3D Photo Placement with Rounded Corners */
+        .photo-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 17, 31, 0.85);
+            border: 1px solid rgba(255, 0, 127, 0.4);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: visible;
+            user-select: none;
+            /* Places the 3 photos evenly in a 3D circle ring */
+            transform: rotateY(var(--rotate-y)) translateZ(240px);
+        }
+
+        /* Displays the FULL image inside its 3D card */
+        .photo-card img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            display: block;
+            object-fit: contain;
+            pointer-events: none;
         }
 
         /* Fixed Bottom Section Content Block wrapper locked higher up */
         .bottom-content {
             margin-top: auto;
-            padding-bottom: 65px; /* UPDATED: Lifted both selection cards up higher away from the absolute screen base */
+            padding-bottom: 65px; /* Lifted both selection cards up higher away from the absolute screen base */
             width: 100%;
         }
 
@@ -153,34 +191,6 @@
             box-shadow: 0 0 30px #ffffff;
             transform: scale(1.05);
         }
-                /* Displays the FULL image with rounded corners */
-        .photo-card {
-            flex: 0 0 100%;
-            display: none; /* Hidden by default, shown by JS script */
-            background: rgba(20, 17, 31, 0.6);
-            border: 1px solid rgba(255, 0, 127, 0.3);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            width: 100%;
-            cursor: grab;
-        }
-        .photo-card.active {
-            display: block;
-        }
-        .photo-card:active {
-            cursor: grabbing;
-        }
-        .photo-card img {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-            display: block;
-            object-fit: contain;
-            user-select: none;
-            pointer-events: none;
-        }
-
     </style>
 </head>
 <body>
@@ -199,25 +209,24 @@
             <h1 class="worklounge-title">Kira’s Work Lounge</h1>
         </div>
 
-        <!-- Middle Photo Gallery Slider Workspace Area -->
-<div class="middle-selection">
-    <div class="photo-slider">
-        
-        <div class="photo-card">
-            <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
+        <!-- Middle 3D Carousel Selection Workspace Area -->
+        <div class="middle-selection">
+            <div class="photo-slider" id="carousel-ring">
+                
+                <div class="photo-card" style="--rotate-y: 0deg;">
+                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png">
+                </div>
+
+                <div class="photo-card" style="--rotate-y: 120deg;">
+                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
+                </div>
+
+                <div class="photo-card" style="--rotate-y: 240deg;">
+                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
+                </div>
+
+            </div>
         </div>
-
-        <div class="photo-card">
-            <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png">
-        </div>
-
-        <div class="photo-card">
-            <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png">
-        </div>
-
-    </div>
-</div>
-
 
         <!-- Lower Section Content Block wrapper locked higher -->
         <div class="bottom-content">
@@ -231,12 +240,6 @@
 
             <!-- Direct Action Booking Button Link Trigger Section -->
             <a href="livecalendar.html" target="_blank" class="book-now-button">Book an Appointment Now</a>  
-
-            </div>
-
-    
-            
-
         </div>
 
     </main>
@@ -261,7 +264,8 @@
         document.addEventListener('touchstart', playSalonMusic);
         document.addEventListener('scroll', playSalonMusic);
     </script>
-    
+
+    <!-- 3D Carousel Script -->
     <script>
         const ring = document.getElementById('carousel-ring');
         let currentAngle = 0;
@@ -296,7 +300,6 @@
             if (!isDragging) return;
             const touch = e.touches ? e.touches[0] : e;
             const diffX = touch.pageX - startX;
-            // Converts horizontal finger drag into smooth circle spinning
             currentAngle = lastAngle + (diffX * 0.4);
             ring.style.transform = `rotateY(${currentAngle}deg)`;
         };
@@ -305,26 +308,3 @@
             if (!isDragging) return;
             isDragging = false;
             
-            // Snap calculation to pull the closest photo straight to the front
-            currentAngle = Math.round(currentAngle / 120) * 120;
-            ring.style.transform = `rotateY(${currentAngle}deg)`;
-            resetAutoSlide();
-        };
-
-        // Desktop Mouse Links
-        ring.addEventListener('mousedown', dragStart);
-        window.addEventListener('mousemove', dragMove);
-        window.addEventListener('mouseup', dragEnd);
-
-        // Mobile Phone and Tablet Touch Links
-        ring.addEventListener('touchstart', dragStart, { passive: true });
-        window.addEventListener('touchmove', dragMove, { passive: true });
-        window.addEventListener('touchend', dragEnd);
-
-        // Turn on the automatic system
-        if (ring) { startAutoSlide(); }
-    </script>
-
-
-</body>
-</html>
