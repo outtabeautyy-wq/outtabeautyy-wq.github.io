@@ -152,6 +152,53 @@
             color: #ff007f;
             margin-top: 15px;
         }
+
+        /* 3D Scene View Container Frame wrapper */
+        .carousel-view-container {
+            width: 100%;
+            max-width: 650px;
+            height: 350px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            overflow: visible;
+        }
+
+        /* The actual spinning geometric carousel column hub anchor */
+        .carousel-3d-hub {
+            position: relative;
+            width: 260px;
+            height: 300px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.2, 0.85, 0.32, 1.2);
+        }
+
+        /* Luxury 3D Carousel Card Item Layer Configurations */
+        .carousel-card {
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            left: 0;
+            top: 0;
+            border-radius: 12px; 
+            border: 2px solid #ff007f; 
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); 
+            overflow: hidden; 
+            cursor: pointer; 
+            user-select: none;
+            backface-visibility: hidden;
+            transition: transform 0.6s ease, opacity 0.6s ease, filter 0.6s ease;
+        }
+        
+        .carousel-card img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            background: #0c0914; 
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -173,27 +220,32 @@
         <!-- Middle Selection Workspace Area Layout block -->
         <div class="middle-selection">
             
-            <!-- 3D Carousel Stage with spatial hardware acceleration rules -->
-            <div id="carouselStage" style="position: relative; width: 100%; max-width: 650px; height: 350px; margin: 0 auto; display: flex; justify-content: center; align-items: center; perspective: 1200px; transform-style: preserve-3d;">
+            <!-- Structural 360-degree Carousel Scene view portal wrapper context -->
+            <div class="carousel-view-container" id="carouselStage">
                 
-                <!-- Card 1 -->
-                <div class="carousel-card" data-index="0" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease; cursor: pointer; user-select: none; backface-visibility: hidden;">
-                    <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" style="width: 100%; height: 100%; object-fit: contain; background: #0c0914; pointer-events: none;">
-                </div>
-                
-                <!-- Card 2 -->
-                <div class="carousel-card" data-index="1" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease; cursor: pointer; user-select: none; backface-visibility: hidden;">
-                    <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" style="width: 100%; height: 100%; object-fit: contain; background: #0c0914; pointer-events: none;">
-                </div>
-                
-                <!-- Card 3 -->
-                <div class="carousel-card" data-index="2" style="position: absolute; width: 340px; height: 320px; border-radius: 12px; border: 2px solid #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); overflow: hidden; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease; cursor: pointer; user-select: none; backface-visibility: hidden;">
-                    <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" style="width: 100%; height: 100%; object-fit: contain; background: #0c0914; pointer-events: none;">
+                <!-- The 3D Hub that physically rotates 360 degrees altogether -->
+                <div class="carousel-3d-hub" id="carouselHub">
+                    
+                    <!-- Card 1 -->
+                    <div class="carousel-card" data-index="0">
+                        <img src="20529735-fa90-4b0c-9c38-f23123dbc533.png" alt="">
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="carousel-card" data-index="1">
+                        <img src="885f7052-c4cb-470c-aa7a-f750c9b4851f.png" alt="">
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="carousel-card" data-index="2">
+                        <img src="c4d1b432-2e00-4303-a4be-c3b818ae9b9b.png" alt="">
+                    </div>
+                    
                 </div>
                 
             </div>
 
-            <div class="swipe-hint-label">🩷 SWIPE OR CLICK TO EXPLORE 🩷</div>
+            <div class="swipe-hint-label">🩷 SWIPE OR CLICK TO SPIN 🩷</div>
         </div>
 
         <!-- Lower Section Content Block wrapper locked higher -->
@@ -220,34 +272,36 @@
     <!-- Interactive 3D Controller & Audio Script -->
     <script>
         const stage = document.getElementById('carouselStage');
+        const hub = document.getElementById('carouselHub');
         const cards = Array.from(document.querySelectorAll('.carousel-card'));
+        
         let currentIndex = 0;
         let startX = 0;
         let isDragging = false;
+        let autoplayTimer = null;
+        
+        const radius = 220; 
+        const theta = 360 / cards.length;
 
-        function updateCarousel() {
+        function updateCarouselHub() {
             cards.forEach((card, index) => {
-                let offset = index - currentIndex;
+                const cardAngle = (index * theta);
+                card.style.transform = `rotateY(${cardAngle}deg) translateZ(${radius}px)`;
                 
-                if (offset < -1) offset += cards.length;
-                if (offset > 1) offset -= cards.length;
-
-                if (offset === 0) {
-                    // Center Card: Pulled Forward
-                    card.style.transform = "translateX(0) translateZ(100px) scale(1) rotateY(0deg)";
-                    card.style.zIndex = "10";
+                const adjustedIndex = ((currentIndex % cards.length) + cards.length) % cards.length;
+                if (index === adjustedIndex) {
                     card.style.opacity = "1";
                     card.style.filter = "none";
-                } else if (offset === 1 || offset === -2) {
-                    // Right Card: Pushed Back & Tilted Inward
-                    card.style.transform = "translateX(160px) translateZ(-150px) scale(0.82) rotateY(-30deg)";
-                    card.style.zIndex = "5";
-                    card.style.opacity = "0.45";
-                    card.style.filter = "blur(1px)";
-                } else if (offset === -1 || offset === 2) {
-                    // Left Card: Pushed Back & Tilted Inward
-                    card.style.transform = "translateX(-160px) translateZ(-150px) scale(0.82) rotateY(30deg)";
-                    card.style.zIndex = "5";
-                    card.style.opacity = "0.45";
-                    card.style.filter = "blur(1px)";
                 } else {
+                    card.style.opacity = "0.45";
+                    card.style.filter = "blur(1px)";
+                }
+            });
+
+            const hubAngle = currentIndex * -theta;
+            hub.style.transform = `translateZ(-${radius}px) rotateY(${hubAngle}deg)`;
+        }
+
+        function startAutoplay() {
+            stopAutoplay(); 
+            autoplayTimer = setInterval(() => {
