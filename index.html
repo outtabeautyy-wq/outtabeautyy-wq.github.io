@@ -312,7 +312,48 @@
         startAutoplay();
     </script>
        
-     
+         <!-- Ultimate Fall Leaves Mix Seasonal Animation -->
+    <div id="mixed-leaves-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; overflow: hidden;"></div>
+    <script>
+        function spawnMixedAutumnLeaf() {
+            const container = document.getElementById('mixed-leaves-container');
+            if (!container) return;
+            const leaf = document.createElement('div');
+            
+            // Mixes your favorite maple leaf with other classic fall shapes!
+            const leafShapes = ['🍁', '🍂', '🍃'];
+            const randomShape = leafShapes[Math.floor(Math.random() * leafShapes.length)];
+            
+            // Premium high-end autumn color palette 
+            const autumnColors = ['#ff4500', '#d4af37', '#b22222', '#ff8c00', '#e67e22'];
+            const randomColor = autumnColors[Math.floor(Math.random() * autumnColors.length)];
+            
+            leaf.innerHTML = randomShape;
+            leaf.style.position = 'absolute';
+            leaf.style.color = randomColor;
+            leaf.style.fontSize = Math.random() * (26 - 16) + 16 + 'px';
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.top = '-30px';
+            leaf.style.opacity = Math.random() * (0.85 - 0.5) + 0.5;
+            leaf.style.userSelect = 'none';
+            
+            // Realistic organic twisting drift physics
+            const fallDuration = Math.random() * (11 - 6) + 6; 
+            const animateLeaf = leaf.animate([
+                { transform: `translateY(0) translateX(0) rotate(0deg)` },
+                { transform: `translateY(105vh) translateX(${Math.random() * (120 - (-120)) + (-120)}px) rotate(${Math.random() * 360}deg)` }
+            ], {
+                duration: fallDuration * 1000,
+                easing: 'linear'
+            });
+            
+            container.appendChild(leaf);
+            animateLeaf.onfinish = () => leaf.remove();
+        }
+        // Drifts a beautiful mixed fall leaf down her screen every 750 milliseconds
+        setInterval(spawnMixedAutumnLeaf, 750);
+    </script>
+
 
 </body>
 </html>
